@@ -250,3 +250,7 @@ paket-files/
 # JetBrains Rider
 .idea/
 *.sln.iml
+
+
+# AppSettings File
+ChessClubManagement\src\ChessClubManagement\appsettings.json

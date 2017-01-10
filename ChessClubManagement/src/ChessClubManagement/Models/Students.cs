@@ -1,0 +1,22 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace ChessClubManagement.Models
+{
+    public partial class Students
+    {
+        public Students()
+        {
+            MatchesStudent1 = new HashSet<Matches>();
+            MatchesStudent2 = new HashSet<Matches>();
+        }
+
+        public int StudentId { get; set; }
+        public string StudentFname { get; set; }
+        public string StudentLname { get; set; }
+        public string StudentDivision { get; set; }
+
+        public virtual ICollection<Matches> MatchesStudent1 { get; set; }
+        public virtual ICollection<Matches> MatchesStudent2 { get; set; }
+    }
+}
