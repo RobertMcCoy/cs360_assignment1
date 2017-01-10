@@ -253,4 +253,4 @@ paket-files/
 
 
 # AppSettings File
-ChessClubManagement\src\ChessClubManagement\appsettings.json
+appsettings.json
