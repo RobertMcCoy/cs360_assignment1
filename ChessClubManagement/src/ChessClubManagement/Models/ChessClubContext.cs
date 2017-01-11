@@ -10,7 +10,10 @@ namespace ChessClubManagement.Models
         public virtual DbSet<Seasons> Seasons { get; set; }
         public virtual DbSet<Students> Students { get; set; }
 
-        public ChessClubContext(DbContextOptions<ChessClubContext> options) : base(options) {}
+        public ChessClubContext(DbContextOptions<ChessClubContext> options) : base(options)
+        {
+            
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
