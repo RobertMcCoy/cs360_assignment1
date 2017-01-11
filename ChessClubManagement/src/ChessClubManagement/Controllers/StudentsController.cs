@@ -1,4 +1,5 @@
 ﻿using ChessClubManagement.Models;
+using ChessClubManagement.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ChessClubManagement.Controllers
@@ -14,6 +15,17 @@ namespace ChessClubManagement.Controllers
         public IActionResult Index()
         {
             return View(_repository.GetStudents());
+        }
+
+        public IActionResult Edit(int id)
+        {
+            return View(_repository.GetStudentEditVmById(id));
+        }
+
+        public IActionResult Update(StudentEditViewModel viewModel)
+        {
+            TempData["SaveSuccess"] = _repository.SaveStudent(viewModel) > 0 ? "Success" : "Fail";
+            return RedirectToAction("Edit", new { id = viewModel.Student.StudentId });
         }
     }
 }

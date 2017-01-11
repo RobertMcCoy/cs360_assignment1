@@ -55,6 +55,8 @@ namespace ChessClubManagement
 
             app.UseStaticFiles();
 
+            app.UseSession();
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

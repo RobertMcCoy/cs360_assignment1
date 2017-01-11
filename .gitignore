@@ -254,3 +254,6 @@ paket-files/
 
 # AppSettings File
 appsettings.json
+
+#Web Essential Settings
+WebEssentials2015-Settings.json

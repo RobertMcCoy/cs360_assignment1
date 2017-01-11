@@ -7,6 +7,7 @@ namespace ChessClubManagement.Models
     public partial class ChessClubContext : DbContext
     {
         public virtual DbSet<Matches> Matches { get; set; }
+        public virtual DbSet<Seasons> Seasons { get; set; }
         public virtual DbSet<Students> Students { get; set; }
 
         public ChessClubContext(DbContextOptions<ChessClubContext> options) : base(options) {}
@@ -20,6 +21,12 @@ namespace ChessClubManagement.Models
 
                 entity.Property(e => e.MatchDate).HasColumnType("datetime");
 
+                entity.HasOne(d => d.Season)
+                    .WithMany(p => p.Matches)
+                    .HasForeignKey(d => d.SeasonId)
+                    .OnDelete(DeleteBehavior.Restrict)
+                    .HasConstraintName("FK__Matches__SeasonI__3D5E1FD2");
+
                 entity.HasOne(d => d.Student1)
                     .WithMany(p => p.MatchesStudent1)
                     .HasForeignKey(d => d.Student1Id)
@@ -31,6 +38,16 @@ namespace ChessClubManagement.Models
                     .HasForeignKey(d => d.Student2Id)
                     .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK__Matches__Student__38996AB5");
+            });
+
+            modelBuilder.Entity<Seasons>(entity =>
+            {
+                entity.HasKey(e => e.SeasonId)
+                    .HasName("PK_Seasons");
+
+                entity.Property(e => e.SeasonId).ValueGeneratedNever();
+
+                entity.Property(e => e.SeasonName).HasMaxLength(50);
             });
 
             modelBuilder.Entity<Students>(entity =>

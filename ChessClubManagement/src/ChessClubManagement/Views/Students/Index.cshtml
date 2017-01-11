@@ -13,6 +13,7 @@
             <th>Name</th>
             <th>Rank</th>
             <th>Division</th>
+            <th></th>
         </tr>
         @foreach (var student in Model)
         {
@@ -20,6 +21,7 @@
                 <td>@student.StudentFname @student.StudentLname</td>
                 <td></td>
                 <td>@student.StudentDivision</td>
+                <td><form asp-controller="Students" asp-action="Edit" asp-route-id="@student.StudentId"><input type="submit" value="Edit Student" class="btn btn-default" /></form></td>
             </tr>
         }
     </table>
