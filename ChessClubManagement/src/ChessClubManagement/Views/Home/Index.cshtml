@@ -1,4 +1,4 @@
-﻿@{
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -6,6 +6,7 @@
     <div class="col-md-3 col-md-offset-3">
         <h1>Welcome to the Chess Club Management System</h1>
         <ul>
+            <li><a asp-controller="Home" asp-action="Login">Login</a></li>
             <li><a asp-controller="Students" asp-action="Index" asp-route-sort="rankings">View Current Rankings</a></li>
             <li><a href="#">View Upcoming Matches</a></li>
             <li><a href="#">Access Administrator Portal</a></li>

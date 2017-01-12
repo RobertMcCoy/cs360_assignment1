@@ -1,6 +1,21 @@
 @{
     ViewData["Title"] = "Registration";
 }
-<div>
+<div class="row">
+    <div class="col-md-3 col-md-offset-3">
+        <h1>Sign Up</h1>
 
+        <label>Name: <input name="name" type="text" class="form-control"></label>
+        <br><br>
+        <label>Email: <input name="email" type="text" class="form-control"></label>
+        <br><br>
+        <label>Phone Number: <input name="phoneNumber" type="text" class="form-control"></label>
+        <br><br>
+        <label>Password: <input name="password1" type="password" class="form-control"></label>
+        <br><br>
+        <label>Reenter Password: <input name="password2" type="password" class="form-control"></label>
+        <br><br>
+        <form asp-controller="Home" asp-action="Registration"><input type="submit" value="Sign Up" class="btn btn-default"></form>
+
+    </div>
 </div>
