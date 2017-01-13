@@ -20,7 +20,7 @@
             <tr>
                 <td>@student.StudentFname @student.StudentLname</td>
                 <td>placeholder</td>
-                <td>@student.StudentDivision</td>
+                <td>@student.DivisionId</td>
                 <td><form asp-controller="Students" asp-action="Edit" asp-route-id="@student.StudentId"><input type="submit" value="Edit Student" class="btn btn-warning" /></form></td>
             </tr>
         }
