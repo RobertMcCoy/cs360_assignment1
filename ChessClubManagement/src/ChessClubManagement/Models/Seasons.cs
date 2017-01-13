@@ -7,6 +7,7 @@ namespace ChessClubManagement.Models
     {
         public Seasons()
         {
+            Divisions = new HashSet<Divisions>();
             Matches = new HashSet<Matches>();
         }
 
@@ -28,6 +29,7 @@ namespace ChessClubManagement.Models
         public DateTime? Wk14 { get; set; }
         public DateTime? Wk15 { get; set; }
 
+        public virtual ICollection<Divisions> Divisions { get; set; }
         public virtual ICollection<Matches> Matches { get; set; }
     }
 }

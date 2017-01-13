@@ -1,4 +1,5 @@
-﻿@model System.Collections.Generic.List<ChessClubManagement.Models.Matches>
+﻿@using System.Globalization
+@model System.Collections.Generic.List<ChessClubManagement.Models.Matches>
 @{
     Layout = "_Layout";
     ViewData["Title"] = "Students";
@@ -6,50 +7,130 @@
 <div>
     <h1>Matches</h1>
     <hr />
-    <table class="table table-striped table-hover">
-        <tr>
-            <th>Date</th>
-            <th>Opponents</th>
-            <th>Outcome</th>
-            <th></th>
-        </tr>
-        @foreach (var match in Model)
+    Select Season:
+    @foreach (var id in ViewBag.SeasonIdList)
+    {
+        <a asp-action="Index" asp-route-id="@id" id="seasonId@id" class="btn btn-warning">@id</a>
+    }
+    <br />
+    <br />
+    @if (ViewBag.id != null)
+    {
+        @Html.Raw("Select Date:")
+        foreach (Tuple<int, List<DateTime>> matchList in ViewBag.ListOfMatchDates)
         {
-            <tr>
-                <td>@DateTime.Parse(match.MatchDate.ToString()).ToString("MM/dd/yyyy")</td>
-                <td>@match.Student1.StudentFname @match.Student1.StudentLname vs. @match.Student2.StudentFname @match.Student2.StudentLname </td>
-                <td>
-                    @{
-                        if (match.Student1Score != null && match.Student2Score != null)
-                        {
-                            if (match.Student1Score == 5 && match.Student2Score == 1)
-                            {
-                                @Html.Raw("Winner: " + match.Student1.StudentFname + " " + match.Student1.StudentLname)
-                                ;
-                            }
-                            else if (match.Student1Score == 3 && match.Student2Score == 3)
-                            {
-                                @Html.Raw("Draw")
-                                ;
-                            }
-                            else if (match.Student1Score == 1 && match.Student2Score == 5)
-                            {
-                                @Html.Raw("Winner: " + match.Student2.StudentFname + " " + match.Student2.StudentLname)
-                            }
-                            else
-                            {
-                                @Html.Raw("Error Determining Winner")
-                                ;
-                            }
-                        }
-                        else
-                        {
-                            @Html.Raw("TBD")
-                        }
-                    }
-                </td>
-                <td><form asp-controller="Matches" asp-action="Edit" asp-route-id="@match.MatchId"><input type="submit" value="Edit Match" class="btn btn-info" /></form></td>
-            </tr>
+            if (matchList.Item1 == ViewBag.id)
+            {
+                foreach (DateTime s in matchList.Item2)
+                {
+                    <a asp-action="Index" asp-route-id="@ViewBag.id" asp-route-date="@s.ToString("MM-dd-yyyy")" id="dateId@s" class="btn btn-warning">@s.ToString("MM-dd-yyyy")</a>
+                }
+            }
         }
-    </table>
-</div>
+    }
+    <br />
+    <br />
+    <table class="table table-striped table-hover">
+            <tr>
+                <th>Match</th>
+                <th>Winner</th>
+                <th>Moves</th>
+                <th></th>
+            </tr>
+            @foreach (var match in Model)
+            {
+                if (ViewBag.date == null)
+                {
+                    <tr>
+                        <td>
+                            @match.Student1.StudentFname @match.Student1.StudentLname
+                            @(match.Student1Color != string.Empty ? Html.Raw("(" + match.Student1Color + ") vs. " + match.Student2.StudentFname + " " + match.Student2.StudentLname + "(" + match.Student2Color + ")") : Html.Raw("vs. " + match.Student2.StudentFname + " " + match.Student2.StudentLname))
+                        </td>
+                        <td>
+                            @{
+                                if (match.Student1Score != null && match.Student2Score != null)
+                                {
+                                    if (match.Student1Result.Equals("W"))
+                                    {
+                                        @match.Student1.StudentLname
+                                        if (match.Student2Result.Equals("X"))
+                                        {
+                                            @Html.Raw(" (X)")
+                                        }
+                                    }
+                                    else if (match.Student1Result.Equals("D"))
+                                    {
+                                        @Html.Raw("Draw")
+                                        ;
+                                    }
+                                    else if (match.Student2Result.Equals("W"))
+                                    {
+                                        @match.Student2.StudentLname
+                                        if (match.Student1Result.Equals("X"))
+                                        {
+                                            @Html.Raw(" (X)")
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    @Html.Raw("TBD")
+                                }
+                            }
+                        </td>
+                        <td>@match.TotalMoves</td>
+                        <td>
+                            <form asp-controller="Matches" asp-action="Edit" asp-route-id="@match.MatchId"><input type="submit" value="Edit Match" class="btn btn-info"/>
+                            </form></td>
+                    </tr>
+                                }
+                                else if (match.MatchDate.Value != null && ViewBag.date.Equals(match.MatchDate.Value.Date.ToString("MM-dd-yyyy")))
+                                {
+                                    <tr>
+                                        <td>
+                                            @match.Student1.StudentFname @match.Student1.StudentLname
+                                            @(match.Student1Color != string.Empty ? Html.Raw("(" + match.Student1Color + ") vs. " + match.Student2.StudentFname + " " + match.Student2.StudentLname + "(" + match.Student2Color + ")") : Html.Raw("vs. " + match.Student2.StudentFname + " " + match.Student2.StudentLname))
+                                        </td>
+                                        <td>
+                                            @{
+                                                if (match.Student1Score != null && match.Student2Score != null)
+                                                {
+                                                    if (match.Student1Result.Equals("W"))
+                                                    {
+                                                        @match.Student1.StudentLname
+                                                        if (match.Student2Result.Equals("X"))
+                                                        {
+                                                            @Html.Raw(" (X)")
+                                                        }
+                                                    }
+                                                    else if (match.Student1Result.Equals("D"))
+                                                    {
+                                                        @Html.Raw("Draw")
+                                                        ;
+                                                    }
+                                                    else if (match.Student2Result.Equals("W"))
+                                                    {
+                                                        @match.Student2.StudentLname
+                                                        if (match.Student1Result.Equals("X"))
+                                                        {
+                                                            @Html.Raw(" (X)")
+                                                        }
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    @Html.Raw("TBD")
+                                                }
+                                            }
+                                        </td>
+                                        <td>@match.TotalMoves</td>
+                                        <td>
+                                            <form asp-controller="Matches" asp-action="Edit" asp-route-id="@match.MatchId">
+                                                <input type="submit" value="Edit Match" class="btn btn-info" />
+                                            </form>
+                                        </td>
+                                    </tr>
+                                                    }
+                                                }
+        </table>
+    </div>

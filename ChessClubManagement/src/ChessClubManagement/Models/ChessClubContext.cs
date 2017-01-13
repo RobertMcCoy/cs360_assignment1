@@ -6,6 +6,7 @@ namespace ChessClubManagement.Models
 {
     public partial class ChessClubContext : DbContext
     {
+        public virtual DbSet<Divisions> Divisions { get; set; }
         public virtual DbSet<Matches> Matches { get; set; }
         public virtual DbSet<Seasons> Seasons { get; set; }
         public virtual DbSet<Students> Students { get; set; }
@@ -17,6 +18,20 @@ namespace ChessClubManagement.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Divisions>(entity =>
+            {
+                entity.HasKey(e => e.DivisionId)
+                    .HasName("PK__Division__20EFC6A8BD846D79");
+
+                entity.Property(e => e.DivisionName).HasMaxLength(55);
+
+                entity.HasOne(d => d.Season)
+                    .WithMany(p => p.Divisions)
+                    .HasForeignKey(d => d.SeasonId)
+                    .OnDelete(DeleteBehavior.Restrict)
+                    .HasConstraintName("FK_SeasonId_Divisions_Seasons");
+            });
+
             modelBuilder.Entity<Matches>(entity =>
             {
                 entity.HasKey(e => e.MatchId)
@@ -24,11 +39,25 @@ namespace ChessClubManagement.Models
 
                 entity.Property(e => e.MatchDate).HasColumnType("datetime");
 
+                entity.Property(e => e.Student1Color).HasColumnType("char(1)");
+
+                entity.Property(e => e.Student1Result).HasColumnType("char(1)");
+
+                entity.Property(e => e.Student1Score).HasColumnType("decimal");
+
+                entity.Property(e => e.Student2Color).HasColumnType("char(1)");
+
+                entity.Property(e => e.Student2Result).HasColumnType("char(1)");
+
+                entity.Property(e => e.Student2Score).HasColumnType("decimal");
+
+                entity.Property(e => e.TotalMoves).HasDefaultValueSql("0");
+
                 entity.HasOne(d => d.Season)
                     .WithMany(p => p.Matches)
                     .HasForeignKey(d => d.SeasonId)
                     .OnDelete(DeleteBehavior.Restrict)
-                    .HasConstraintName("FK__Matches__SeasonI__3D5E1FD2");
+                    .HasConstraintName("FK_SeasonId_Matches_Seasons");
 
                 entity.HasOne(d => d.Student1)
                     .WithMany(p => p.MatchesStudent1)
@@ -46,9 +75,7 @@ namespace ChessClubManagement.Models
             modelBuilder.Entity<Seasons>(entity =>
             {
                 entity.HasKey(e => e.SeasonId)
-                    .HasName("PK_Seasons");
-
-                entity.Property(e => e.SeasonId).ValueGeneratedNever();
+                    .HasName("PK__Seasons__C1814E38FA29E485");
 
                 entity.Property(e => e.SeasonName).HasMaxLength(50);
 
@@ -88,11 +115,14 @@ namespace ChessClubManagement.Models
                 entity.HasKey(e => e.StudentId)
                     .HasName("PK__Students__32C52B99ACDCD224");
 
-                entity.Property(e => e.StudentDivision).HasColumnType("char(1)");
-
                 entity.Property(e => e.StudentFname).HasMaxLength(50);
 
                 entity.Property(e => e.StudentLname).HasMaxLength(50);
+
+                entity.HasOne(d => d.Division)
+                    .WithMany(p => p.Students)
+                    .HasForeignKey(d => d.DivisionId)
+                    .HasConstraintName("FK_DivisionId_Students_Divisions");
             });
 
             modelBuilder.Entity<Tally>(entity =>

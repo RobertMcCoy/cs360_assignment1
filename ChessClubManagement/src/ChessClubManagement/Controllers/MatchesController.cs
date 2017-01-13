@@ -13,8 +13,12 @@ namespace ChessClubManagement.Controllers
             _repository = new MatchesRepository(context);
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int id = 0, string date = "")
         {
+            ViewBag.id = id;
+            ViewBag.date = date;
+            ViewBag.SeasonIdList = _repository.GetSeasonIds();
+            ViewBag.ListOfMatchDates = _repository.GetListOfMatchDatesPerSeason();
             return View(_repository.GetMatches());
         }
     }
