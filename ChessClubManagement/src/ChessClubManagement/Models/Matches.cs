@@ -9,8 +9,9 @@ namespace ChessClubManagement.Models
         public int Student1Id { get; set; }
         public int Student2Id { get; set; }
         public DateTime? MatchDate { get; set; }
-        public int? MatchWinner { get; set; }
         public int SeasonId { get; set; }
+        public int? Student1Score { get; set; }
+        public int? Student2Score { get; set; }
 
         public virtual Seasons Season { get; set; }
         public virtual Students Student1 { get; set; }

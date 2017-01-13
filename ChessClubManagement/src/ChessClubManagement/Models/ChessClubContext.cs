@@ -9,8 +9,11 @@ namespace ChessClubManagement.Models
         public virtual DbSet<Matches> Matches { get; set; }
         public virtual DbSet<Seasons> Seasons { get; set; }
         public virtual DbSet<Students> Students { get; set; }
+        public virtual DbSet<Tally> Tally { get; set; }
 
-        public ChessClubContext(DbContextOptions<ChessClubContext> options) : base(options) {}
+        // Unable to generate entity type for table 'dbo.MatchesTrial'. Please see the warning messages.
+
+        public ChessClubContext(DbContextOptions<ChessClubContext> options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -48,6 +51,36 @@ namespace ChessClubManagement.Models
                 entity.Property(e => e.SeasonId).ValueGeneratedNever();
 
                 entity.Property(e => e.SeasonName).HasMaxLength(50);
+
+                entity.Property(e => e.Wk1).HasColumnType("date");
+
+                entity.Property(e => e.Wk10).HasColumnType("date");
+
+                entity.Property(e => e.Wk11).HasColumnType("date");
+
+                entity.Property(e => e.Wk12).HasColumnType("date");
+
+                entity.Property(e => e.Wk13).HasColumnType("date");
+
+                entity.Property(e => e.Wk14).HasColumnType("date");
+
+                entity.Property(e => e.Wk15).HasColumnType("date");
+
+                entity.Property(e => e.Wk2).HasColumnType("date");
+
+                entity.Property(e => e.Wk3).HasColumnType("date");
+
+                entity.Property(e => e.Wk4).HasColumnType("date");
+
+                entity.Property(e => e.Wk5).HasColumnType("date");
+
+                entity.Property(e => e.Wk6).HasColumnType("date");
+
+                entity.Property(e => e.Wk7).HasColumnType("date");
+
+                entity.Property(e => e.Wk8).HasColumnType("date");
+
+                entity.Property(e => e.Wk9).HasColumnType("date");
             });
 
             modelBuilder.Entity<Students>(entity =>
@@ -60,6 +93,14 @@ namespace ChessClubManagement.Models
                 entity.Property(e => e.StudentFname).HasMaxLength(50);
 
                 entity.Property(e => e.StudentLname).HasMaxLength(50);
+            });
+
+            modelBuilder.Entity<Tally>(entity =>
+            {
+                entity.HasKey(e => e.Number)
+                    .HasName("PK_Tally");
+
+                entity.Property(e => e.Number).ValueGeneratedNever();
             });
         }
     }
