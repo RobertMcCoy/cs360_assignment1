@@ -1,15 +1,23 @@
-@{
-    ViewData["Title"] = "Login";
-}
-<div class="row">
-    <div class="col-md-3 col-md-offset-3">
-        <h1>Login</h1>
-        Email: <input name="email" type="email" class="form-control" placeholder="Enter email">
-        <br><br>
-        Password: <input name="password" class="form-control" type="password" placeholder="Password" />
-        <br><br>
-        <form asp-controller="Home" asp-action="index"><input class="btn btn-primary" type="submit" value="Login"></form>
-        <br><br>
-        <p>No account? <a asp-controller="Home" asp-action="Registration">Sign Up</a></p>
-    </div>
+@model LockContext
+
+
+<div id="root" style="width: 320px; margin: 40px auto; padding: 10px; border-style: dashed; border-width: 1px;">
 </div>
+<script src="https://cdn.auth0.com/js/lock/10.9.1/lock.min.js"></script>
+<script>
+  var lock = new Auth0Lock('@Model.ClientId', '@Model.Domain', {
+    container: 'root',
+    auth: {
+      redirectUrl: '@Model.CallbackUrl',
+      responseType: 'code',
+      params: {
+        scope: 'openid email nickname',
+        state: '@Model.State' ,
+        nonce: '@Model.Nonce'
+      }
+    },
+    allowedConnections: ['ChessClubManagement']
+  });
+
+  lock.show();
+</script>

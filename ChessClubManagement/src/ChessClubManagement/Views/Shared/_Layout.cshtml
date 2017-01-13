@@ -37,8 +37,15 @@
                     <li><a asp-area="" asp-controller="Matches" asp-action="Index">Matches</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a asp-area="" asp-controller="Home" asp-action="Login">Login</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Registration">Register</a></li>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li><a asp-controller="Home" asp-action="Profile" asp-route-id="">Hello @User.Claims.First(c => c.Type.Equals("nickname")).Value</a></li>
+                        <li><a asp-area="" asp-controller="Home" asp-action="Logout">Logout</a></li>
+                    }
+                    else
+                    {
+                        <li><a asp-area="" asp-controller="Home" asp-action="Login">Login</a></li>
+                    }
                 </ul>
             </div>
         </div>
@@ -56,21 +63,70 @@
 
 <environment names="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="https://cdn.auth0.com/js/auth0/8.0.4/auth0.min.js"></script>
+    <script src="https://cdn.auth0.com/js/lock/10.9.1/lock.min.js"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
     </environment>
-    <environment names="Staging,Production">
-        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
-                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
-                asp-fallback-test="window.jQuery">
-        </script>
-        <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/bootstrap.min.js"
-                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
-                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal">
-        </script>
-        <script src="~/js/site.min.js" asp-append-version="true"></script>
-    </environment>
+<environment names="Staging,Production">
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
+            asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+            asp-fallback-test="window.jQuery">
+    </script>
+    <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/bootstrap.min.js"
+            asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+            asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal">
+    </script>
+    <script src="https://cdn.auth0.com/js/auth0/8.0.4/auth0.min.js"></script>
+    <script src="https://cdn.auth0.com/js/lock/10.9.1/lock.min.js"></script>
+    <script src="~/js/site.min.js" asp-append-version="true"></script>
+</environment>
+    
+@*<script>
+    var options = {
+        allowedConnections: ['ChessClubManagement']
+    }
 
-    @RenderSection("scripts", required: false)
+    // Initiating our Auth0Lock
+    var lock = new Auth0Lock(
+        'pEUSkBUEFmD407rFhSSIddyJxyC57ObI',
+        'robertmccoy.auth0.com',
+        options
+    );
+
+    // Listening for the authenticated event
+    lock.on("authenticated", function (authResult) {
+        // Use the token in authResult to getUserInfo() and save it to localStorage
+        lock.getUserInfo(authResult.accessToken, function (error, profile) {
+            if (error) {
+                console.log("something went wrong");
+                return;
+            }
+            localStorage.setItem('accessToken', authResult.accessToken);
+            localStorage.setItem('profile', JSON.stringify(profile));
+        });
+    });
+</script>
+
+<script>
+    document.getElementById('btn-login').addEventListener('click', function () {
+        lock.show();
+    });
+</script>
+    
+<script>
+    var token = localStorage.getItem('accessToken');
+    if (token) {
+        showLoggedIn();
+    }
+
+    // Display the user's profile
+    function showLoggedIn() {
+        var profile = JSON.parse(localStorage.getItem('profile'));
+        document.getElementById('nick').textContent = profile.nickname;
+    }
+</script>*@
+
+@RenderSection("scripts", required: false)
 </body>
 </html>

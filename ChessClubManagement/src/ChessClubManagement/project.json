@@ -1,5 +1,10 @@
-﻿{
+{
   "dependencies": {
+    "Auth0.AuthenticationApi": "3.7.0",
+    "FubarCoder.RestSharp.Portable.HttpClient": "4.0.7",
+    "Microsoft.AspNetCore.Authentication.Cookies": "1.1.0",
+    "Microsoft.AspNetCore.Authentication.OAuth": "1.1.0",
+    "Microsoft.AspNetCore.Authentication.OpenIdConnect": "1.1.0",
     "Microsoft.AspNetCore.Diagnostics": "1.0.0",
     "Microsoft.AspNetCore.Mvc": "1.0.1",
     "Microsoft.AspNetCore.Razor.Tools": {
@@ -26,7 +31,8 @@
       "version": "1.0.1",
       "type": "platform"
     },
-    "Microsoft.VisualStudio.Web.BrowserLink.Loader": "14.0.0"
+    "Microsoft.VisualStudio.Web.BrowserLink.Loader": "14.0.0",
+    "RestSharp.NetCore": "105.2.3"
   },
 
   "tools": {
