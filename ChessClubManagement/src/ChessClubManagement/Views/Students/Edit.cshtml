@@ -25,20 +25,20 @@
     <div class="col-md-6">
         <h1>@Model.Student.StudentFname @Model.Student.StudentLname</h1>
         <form asp-controller="Students" asp-action="Update" asp-route-id="Student.StudentId">
-            <input asp-for="Student.StudentId" type="hidden" />
+            <input asp-for="@Model.Student.StudentId" type="hidden" />
             <div class="input-group">
                 <label class="input-group-addon">First Name</label>
-                <input asp-for="Student.StudentFname" type="text" class="form-control" id="studentFnameTxt" placeholder="First Name" required/>
+                <input asp-for="@Model.Student.StudentFname" type="text" class="form-control" id="studentFnameTxt" placeholder="First Name" required/>
             </div>
             <br/>
             <div class="input-group">
                 <label  class="input-group-addon">Last Name</label>
-                <input asp-for="Student.StudentLname" type="text" class="form-control" id="studentLnameTxt" placeholder="First Name" required/>
+                <input asp-for="@Model.Student.StudentLname" type="text" class="form-control" id="studentLnameTxt" placeholder="First Name" required/>
             </div>
             <br/>
             <div class="input-group">
                 <label class="input-group-addon">Division</label>
-                <select asp-for="Student.StudentId" type="text" class="form-control" style="width: 65px" id="studentDivisionTxt" placeholder="Division" required>
+                <select asp-for="@Model.Student.StudentId" type="text" class="form-control" style="width: 65px" id="studentDivisionTxt" placeholder="Division" required>
                     <option>A</option>
                     <option>B</option>
                     <option>C</option>

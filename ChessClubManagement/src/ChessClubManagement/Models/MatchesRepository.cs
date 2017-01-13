@@ -41,5 +41,16 @@ namespace ChessClubManagement.Models
             }
             return listOfStringsOfMatches;
         }
+
+        public Matches GetMatchById(int id)
+        {
+            return _context.Matches.Single(m => m.MatchId == id);
+        }
+
+        public void UpdateMatch(Matches match)
+        {
+            _context.Matches.Update(match);
+            _context.SaveChanges();
+        }
     }
 }

@@ -38,5 +38,10 @@ namespace ChessClubManagement.Models
             var success = _context.SaveChanges();
             return success;
         }
+
+        public Students GetStudentById(int id)
+        {
+            return _context.Students.Single(s => s.StudentId == id);
+        }
     }
 }

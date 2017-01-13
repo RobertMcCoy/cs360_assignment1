@@ -27,5 +27,10 @@ namespace ChessClubManagement.Controllers
             TempData["SaveSuccess"] = _repository.SaveStudent(viewModel) > 0 ? "Success" : "Fail";
             return RedirectToAction("Edit", new { id = viewModel.Student.StudentId });
         }
+
+        public IActionResult Member(int id)
+        {
+            return View(_repository.GetStudentById(id));
+        }
     }
 }
