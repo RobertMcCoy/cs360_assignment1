@@ -11,6 +11,7 @@ namespace ChessClubManagement.Models
         public virtual DbSet<Seasons> Seasons { get; set; }
         public virtual DbSet<Students> Students { get; set; }
         public virtual DbSet<Tally> Tally { get; set; }
+        public virtual DbSet<Users> Users { get; set; }
 
         // Unable to generate entity type for table 'dbo.MatchesTrial'. Please see the warning messages.
 
@@ -63,13 +64,13 @@ namespace ChessClubManagement.Models
                     .WithMany(p => p.MatchesStudent1)
                     .HasForeignKey(d => d.Student1Id)
                     .OnDelete(DeleteBehavior.Restrict)
-                    .HasConstraintName("FK__Matches__Student__37A5467C");
+                    .HasConstraintName("FK_Student1Id_Matches_Students");
 
                 entity.HasOne(d => d.Student2)
                     .WithMany(p => p.MatchesStudent2)
                     .HasForeignKey(d => d.Student2Id)
                     .OnDelete(DeleteBehavior.Restrict)
-                    .HasConstraintName("FK__Matches__Student__38996AB5");
+                    .HasConstraintName("FK_Student2Id_Matches_Students");
             });
 
             modelBuilder.Entity<Seasons>(entity =>
@@ -115,14 +116,15 @@ namespace ChessClubManagement.Models
                 entity.HasKey(e => e.StudentId)
                     .HasName("PK__Students__32C52B99ACDCD224");
 
-                entity.Property(e => e.StudentFname).HasMaxLength(50);
-
-                entity.Property(e => e.StudentLname).HasMaxLength(50);
-
                 entity.HasOne(d => d.Division)
                     .WithMany(p => p.Students)
                     .HasForeignKey(d => d.DivisionId)
                     .HasConstraintName("FK_DivisionId_Students_Divisions");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.Students)
+                    .HasForeignKey(d => d.UserId)
+                    .HasConstraintName("FK_UserId_Students_Users");
             });
 
             modelBuilder.Entity<Tally>(entity =>
@@ -131,6 +133,19 @@ namespace ChessClubManagement.Models
                     .HasName("PK_Tally");
 
                 entity.Property(e => e.Number).ValueGeneratedNever();
+            });
+
+            modelBuilder.Entity<Users>(entity =>
+            {
+                entity.Property(e => e.Email)
+                    .IsRequired()
+                    .HasColumnType("varchar(255)");
+
+                entity.Property(e => e.Nickname).HasColumnType("varchar(255)");
+
+                entity.Property(e => e.Password)
+                    .IsRequired()
+                    .HasColumnType("varchar(255)");
             });
         }
     }

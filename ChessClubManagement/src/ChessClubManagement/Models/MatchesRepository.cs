@@ -17,7 +17,7 @@ namespace ChessClubManagement.Models
 
         public List<Matches> GetMatches()
         {
-            return _context.Matches.Include(m => m.Student1).Include(m => m.Student2).OrderBy(m => m.MatchDate).ThenBy(m => m.Student1.StudentFname).ToList();
+            return _context.Matches.Include(m => m.Student1).ThenInclude(s => s.User).Include(m => m.Student2).ThenInclude(s => s.User).OrderBy(m => m.MatchDate).ThenBy(m => m.Student1.User.Nickname).ToList();
         }
 
         public List<int> GetSeasonIds()

@@ -18,10 +18,10 @@
         @foreach (var student in Model)
         {
             <tr>
-                <td>@student.StudentFname @student.StudentLname</td>
+                <td>@student.User.Nickname @student.User.Nickname</td>
                 <td>placeholder</td>
                 <td>@student.DivisionId</td>
-                <td><form asp-controller="Students" asp-action="Edit" asp-route-id="@student.StudentId"><input type="submit" value="Edit Student" class="btn btn-warning" /></form></td>
+                <td><form asp-controller="Members" asp-action="Edit" asp-route-id="@student.StudentId"><input type="submit" value="Edit Student" class="btn btn-warning" /></form></td>
             </tr>
         }
     </table>

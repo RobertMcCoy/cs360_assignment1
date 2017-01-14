@@ -43,8 +43,8 @@
                 {
                     <tr>
                         <td>
-                            @match.Student1.StudentFname @match.Student1.StudentLname
-                            @(match.Student1Color != string.Empty ? Html.Raw("(" + match.Student1Color + ") vs. " + match.Student2.StudentFname + " " + match.Student2.StudentLname + "(" + match.Student2Color + ")") : Html.Raw("vs. " + match.Student2.StudentFname + " " + match.Student2.StudentLname))
+                            @match.Student1.User.Nickname @match.Student1.User.Nickname
+                            @(match.Student1Color != string.Empty ? Html.Raw("(" + match.Student1Color + ") vs. " + match.Student2.User.Nickname + " " + match.Student2.User.Nickname + "(" + match.Student2Color + ")") : Html.Raw("vs. " + match.Student2.User.Nickname + " " + match.Student2.User.Nickname))
                         </td>
                         <td>
                             @{
@@ -52,7 +52,7 @@
                                 {
                                     if (match.Student1Result.Equals("W"))
                                     {
-                                        @match.Student1.StudentLname
+                                        @match.Student1.User.Nickname
                                         if (match.Student2Result.Equals("X"))
                                         {
                                             @Html.Raw(" (X)")
@@ -65,7 +65,7 @@
                                     }
                                     else if (match.Student2Result.Equals("W"))
                                     {
-                                        @match.Student2.StudentLname
+                                        @match.Student2.User.Nickname
                                         if (match.Student1Result.Equals("X"))
                                         {
                                             @Html.Raw(" (X)")
@@ -88,8 +88,8 @@
                                 {
                                     <tr>
                                         <td>
-                                            @match.Student1.StudentFname @match.Student1.StudentLname
-                                            @(match.Student1Color != string.Empty ? Html.Raw("(" + match.Student1Color + ") vs. " + match.Student2.StudentFname + " " + match.Student2.StudentLname + "(" + match.Student2Color + ")") : Html.Raw("vs. " + match.Student2.StudentFname + " " + match.Student2.StudentLname))
+                                            @match.Student1.User.Nickname @match.Student1.User.Nickname
+                                            @(match.Student1Color != string.Empty ? Html.Raw("(" + match.Student1Color + ") vs. " + match.Student2.User.Nickname + " " + match.Student2.User.Nickname + "(" + match.Student2Color + ")") : Html.Raw("vs. " + match.Student2.User.Nickname + " " + match.Student2.User.Nickname))
                                         </td>
                                         <td>
                                             @{
@@ -97,7 +97,7 @@
                                                 {
                                                     if (match.Student1Result.Equals("W"))
                                                     {
-                                                        @match.Student1.StudentLname
+                                                        @match.Student1.User.Nickname
                                                         if (match.Student2Result.Equals("X"))
                                                         {
                                                             @Html.Raw(" (X)")
@@ -110,7 +110,7 @@
                                                     }
                                                     else if (match.Student2Result.Equals("W"))
                                                     {
-                                                        @match.Student2.StudentLname
+                                                        @match.Student2.User.Nickname
                                                         if (match.Student1Result.Equals("X"))
                                                         {
                                                             @Html.Raw(" (X)")

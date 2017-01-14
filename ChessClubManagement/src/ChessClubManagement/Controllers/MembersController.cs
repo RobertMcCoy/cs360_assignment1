@@ -4,10 +4,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ChessClubManagement.Controllers
 {
-    public class StudentsController : Controller
+    public class MembersController : Controller
     {
         private readonly StudentRepository _repository;
-        public StudentsController(ChessClubContext context)
+        public MembersController(ChessClubContext context)
         {
             _repository = new StudentRepository(context);
         }
