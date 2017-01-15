@@ -146,6 +146,8 @@ namespace ChessClubManagement.Models
                 entity.Property(e => e.Password)
                     .IsRequired()
                     .HasColumnType("varchar(255)");
+
+                entity.Property(e => e.PhoneNumber).HasColumnType("varchar(25)");
             });
         }
     }

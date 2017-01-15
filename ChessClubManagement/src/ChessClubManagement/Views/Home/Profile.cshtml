@@ -9,14 +9,20 @@
         <div class="row">
             <h2>@ViewData["Title"]</h2>
             <div class="col-md-4">
-                <h3> Name/Username: <input type="text" value="@Model.Name" /></h3>
-                <p>
-                    <i class="glyphicon glyphicon-envelope"></i> Email: <input class="form-control" type="text" value="@Model.EmailAddress" />
-                </p>
-                <p>
-                    <i class="glyphicon glyphicon-phone"></i>Phone: <input class="form-control" type="text" value="@Model.PhoneNumber" />
-                </p>
-                <input type="button" value="Save" />
+                <form asp-action="UpdateUser">
+                    <label asp-for="@Model.Name"></label>
+                    <input type="text" class="form-control" asp-for="@Model.Name" value="@Model.Name" />
+                    <br />
+                    <i class="glyphicon glyphicon-envelope"></i>
+                    <label asp-for="@Model.EmailAddress"></label>
+                    <input class="form-control" type="text" asp-for="@Model.EmailAddress" value="@Model.EmailAddress" />
+                    <br />
+                    <i class="glyphicon glyphicon-phone"></i>
+                    <label asp-for="@Model.PhoneNumber"></label>
+                    <input class="form-control" type="text" asp-for="PhoneNumber" value="@Model.PhoneNumber" />
+                    <br />
+                    <input type="submit" value="Save" class="btn btn-info"/>
+                </form>
             </div>
         </div>
     </div>
