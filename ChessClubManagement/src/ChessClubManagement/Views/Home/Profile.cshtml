@@ -7,12 +7,16 @@
 <div class="row">
     <div class="col-md-12">
         <div class="row">
-            <h2>@ViewData["Title"].</h2>
+            <h2>@ViewData["Title"]</h2>
             <div class="col-md-4">
-                <h3>@Model.Name</h3>
+                <h3> Name/Username: <input type="text" value="@Model.Name" /></h3>
                 <p>
-                    <i class="glyphicon glyphicon-envelope"></i> @Model.EmailAddress
+                    <i class="glyphicon glyphicon-envelope"></i> Email: <input class="form-control" type="text" value="@Model.EmailAddress" />
                 </p>
+                <p>
+                   @* <i class="glyphicon glyphicon-phone"></i>Phone: <input type="text" value="@Model.PhoneNumber" />*@
+                </p>
+                <input type="button" value="Save" />
             </div>
         </div>
     </div>
