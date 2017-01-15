@@ -19,7 +19,7 @@ namespace ChessClubManagement.Models
 
         public List<Students> GetStudents()
         {
-            return _context.Students.ToList();
+            return _context.Students.Include(s => s.User).ToList();
         }
 
         public StudentEditViewModel GetStudentEditVmById(int id)

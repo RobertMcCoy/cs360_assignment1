@@ -2,7 +2,7 @@
 @model System.Collections.Generic.List<ChessClubManagement.Models.Matches>
 @{
     Layout = "_Layout";
-    ViewData["Title"] = "Students";
+    ViewData["Title"] = "Members";
 }
 <div>
     <h1>Matches</h1>
@@ -43,8 +43,8 @@
                 {
                     <tr>
                         <td>
-                            @match.Student1.User.Nickname @match.Student1.User.Nickname
-                            @(match.Student1Color != string.Empty ? Html.Raw("(" + match.Student1Color + ") vs. " + match.Student2.User.Nickname + " " + match.Student2.User.Nickname + "(" + match.Student2Color + ")") : Html.Raw("vs. " + match.Student2.User.Nickname + " " + match.Student2.User.Nickname))
+                            @match.Student1.User.Nickname
+                            @(match.Student1Color != string.Empty ? Html.Raw("(" + match.Student1Color + ") vs. " + match.Student2.User.Nickname + "(" + match.Student2Color + ")") : Html.Raw("vs. " + match.Student2.User.Nickname + " " + match.Student2.User.Nickname))
                         </td>
                         <td>
                             @{
@@ -88,8 +88,8 @@
                                 {
                                     <tr>
                                         <td>
-                                            @match.Student1.User.Nickname @match.Student1.User.Nickname
-                                            @(match.Student1Color != string.Empty ? Html.Raw("(" + match.Student1Color + ") vs. " + match.Student2.User.Nickname + " " + match.Student2.User.Nickname + "(" + match.Student2Color + ")") : Html.Raw("vs. " + match.Student2.User.Nickname + " " + match.Student2.User.Nickname))
+                                            @match.Student1.User.Nickname
+                                            @(match.Student1Color != string.Empty ? Html.Raw("(" + match.Student1Color + ") vs. " + match.Student2.User.Nickname + " (" + match.Student2Color + ")") : Html.Raw("vs. " + match.Student2.User.Nickname + " " + match.Student2.User.Nickname))
                                         </td>
                                         <td>
                                             @{
