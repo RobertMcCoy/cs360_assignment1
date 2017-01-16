@@ -3,7 +3,39 @@
 @{
 	Layout = "_Layout";
     ViewData["Title"] = "Member";
+    //Please be sure to double-check that all the information Prof. Sedlmeyer wants is here!
+    //I'm still without Blackboard access, so I'm unable to do so until I call the helpdesk.
 }
 <div>
+    <h1>(Member Name)</h1>
+    <ul style="list-style: none;">
+        <li><b>Division: </b>(division)</li>
+        <li><b>Point Total: </b> (# of points)</li>
+        <li><b>Division Ranking: </b>(rank) out of (# members in division)</li>
+        <li><b>Overall Ranking: </b>(rank) out of (# members total)</li>
+    </ul>
+    <br />
+    <h2>Match Listing</h2>
+    <hr />
+    <table class="table table-striped table-hover">
+        <tr>
+            <th>Date</th>
+            <th>Opponent</th>
+            <th>Result</th>
+            <th>Points</th>
+        </tr>
+        @foreach (/*logic goes here*/) //Using the same basic logic as Members/Index.cshtml to construct the table
+        {
+            <tr>
+                <td>(date goes here)</td>
+                <td>(opponent goes here)</td>
+                <td>(result goes here)</td>
+                <td>(points go here)</td>
+            </tr>
 
+        }
+        
+    </table>
+    <br />
+    <button type="button">Edit</button>
 </div>
