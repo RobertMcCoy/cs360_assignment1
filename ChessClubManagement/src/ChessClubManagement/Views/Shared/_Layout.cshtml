@@ -114,6 +114,56 @@
 
     }
 </script>
+
+    <script language="javascript" type="text/javascript">
+    function GetStudent2DropDown(_divId) {
+        $("#student2dropdown").html("<option value='0'>Loading Students...</option>").show();
+        var url = "/Admin/GetStudentsInDivision/";
+
+        $.ajax({
+            url: url,
+            data: { divisionId: _divId },
+            cache: false,
+            type: "POST",
+            success: function (data) {
+                var markup = "<option value='0'>Select A Student</option>";
+                for (var x = 0; x < data.length; x++) {
+                    markup += "<option value=" + data[x].value + ">" + data[x].text + "</option>";
+                }
+                $("#student2dropdown").html(markup).show();
+            },
+            error: function (reponse) {
+                alert("error : " + reponse);
+            }
+        });
+
+    }
+    </script>
+
+    <script language="javascript" type="text/javascript">
+        function GetStudentsInSeason(_seasonId) {
+        $("#student1dropdown").html("<option value='0'>Loading Students...</option>").show();
+        var url = "/Admin/GetStudentsInSeason/";
+
+        $.ajax({
+            url: url,
+            data: { seasonId: _seasonId },
+            cache: false,
+            type: "POST",
+            success: function (data) {
+                var markup = "<option value='0'>Select A Student</option>";
+                for (var x = 0; x < data.length; x++) {
+                    markup += "<option value=" + data[x].value + ">" + data[x].text + "</option>";
+                }
+                $("#student1dropdown").html(markup).show();
+            },
+            error: function (reponse) {
+                alert("error : " + reponse);
+            }
+        });
+
+    }
+    </script>
     
 <script>
     $(document).ready(function () {
@@ -125,7 +175,6 @@
     
 <script language="javascript" type="text/javascript">
     function GetNext15Days(_startDate) {
-        console.log(_startDate);
         if (_startDate !== "") {
             $('#datePickerDate').attr('value',_startDate);
             console.log($('#datePickerDate').val());
@@ -143,6 +192,14 @@
         }
     }
 </script>
+
+    <script language="javascript" type="text/javascript">
+        function UpdateMatchDate(_startDate) {
+        if (_startDate !== "") {
+            $('#datePickerDate').attr('value',_startDate);
+        }
+    }
+    </script>
 
 @RenderSection("scripts", required: false)
 </body>

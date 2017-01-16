@@ -31,10 +31,44 @@ namespace ChessClubManagement.Controllers
             return View();
         }
 
+        [HttpGet]
+        public IActionResult CreateMatch()
+        {
+            ViewBag.SeasonDropDown = _repository.GetSeasonDropDown();
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult CreateMatch(Matches newMatch)
+        {
+            Tuple<string, int> createResponse = _repository.CreateMatch(newMatch);
+            TempData["Result"] = createResponse.Item1;
+            if (TempData["Result"].Equals("Match Created Successfully"))
+            {
+                return RedirectToAction("Match", "Matches", new { id = createResponse.Item2 });
+            }
+            else
+            {
+                return View(newMatch);
+            }
+        }
+
         [HttpPost]
         public ActionResult GetDivisionsBySeason(int id)
         {
             return Json(_repository.GetDivisionsBySeason(id));
+        }
+
+        [HttpPost]
+        public IActionResult GetStudentsInDivision(int divisionId)
+        {
+            return Json(_repository.GetStudentsInDivision(divisionId));
+        }
+
+        [HttpPost]
+        public IActionResult GetStudentsInSeason(int seasonId)
+        {
+            return Json(_repository.GetStudentsInSeason(seasonId));
         }
 
         public IActionResult GenerateSchedules(GenerateMatchesViewModel viewModel)
