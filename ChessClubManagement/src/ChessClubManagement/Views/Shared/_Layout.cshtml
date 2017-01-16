@@ -7,14 +7,16 @@
 
     <environment names="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.superhero.min.css" />
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.cerulean.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.css">
         <link rel="stylesheet" href="~/css/site.css" />
     </environment>
     <environment names="Staging,Production">
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/css/bootstrap.min.css"
               asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.superhero.min.css" asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css" asp-append-version="true" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.css">
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.cerulean.css" />
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
     </environment>
 </head>
@@ -62,9 +64,10 @@
     </div>
 
 <environment names="Development">
-        <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/jquery/dist/jquery.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
     <script src="https://cdn.auth0.com/js/auth0/8.0.4/auth0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.js"></script>
     <script src="https://cdn.auth0.com/js/lock/10.9.1/lock.min.js"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
     </environment>
@@ -77,55 +80,69 @@
             asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
             asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal">
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.js"></script>
     <script src="https://cdn.auth0.com/js/auth0/8.0.4/auth0.min.js"></script>
     <script src="https://cdn.auth0.com/js/lock/10.9.1/lock.min.js"></script>
     <script src="~/js/site.min.js" asp-append-version="true"></script>
 </environment>
-    
-@*<script>
-    var options = {
-        allowedConnections: ['ChessClubManagement']
-    }
 
-    // Initiating our Auth0Lock
-    var lock = new Auth0Lock(
-        'pEUSkBUEFmD407rFhSSIddyJxyC57ObI',
-        'robertmccoy.auth0.com',
-        options
-    );
+<script language="javascript" type="text/javascript">
+    function GetDivisions(_seasonId) {
+        $("#showdivisions").html("Loading Divisions...").show();
+        var url = "/Admin/GetDivisionsBySeason/";
 
-    // Listening for the authenticated event
-    lock.on("authenticated", function (authResult) {
-        // Use the token in authResult to getUserInfo() and save it to localStorage
-        lock.getUserInfo(authResult.accessToken, function (error, profile) {
-            if (error) {
-                console.log("something went wrong");
-                return;
+        $.ajax({
+            url: url,
+            data: { id: _seasonId },
+            cache: false,
+            type: "POST",
+            success: function (data) {
+                var markup = "Divisions in this season: ";
+                for (var x = 0; x < data.length; x++) {
+                    if (x !== data.length - 1) {
+                        markup += data[x] + ", ";
+                    } else {
+                        markup += data[x];
+                    }
+                }
+                $("#showdivisions").html(markup).show();
+            },
+            error: function (reponse) {
+                alert("error : " + reponse);
             }
-            localStorage.setItem('accessToken', authResult.accessToken);
-            localStorage.setItem('profile', JSON.stringify(profile));
+        });
+
+    }
+</script>
+    
+<script>
+    $(document).ready(function () {
+        $("[name=datePicker]").datepicker({
+            daysOfWeekDisabled: [0,1,2,3,4,5]
         });
     });
 </script>
-
-<script>
-    document.getElementById('btn-login').addEventListener('click', function () {
-        lock.show();
-    });
-</script>
     
-<script>
-    var token = localStorage.getItem('accessToken');
-    if (token) {
-        showLoggedIn();
+<script language="javascript" type="text/javascript">
+    function GetNext15Days(_startDate) {
+        console.log(_startDate);
+        if (_startDate !== "") {
+            $('#datePickerDate').attr('value',_startDate);
+            console.log($('#datePickerDate').val());
+            var date = new Date(_startDate);
+            var next15Days = "Dates that matches will be generated for: ";
+            for (var x = 0; x < 15; x++) {
+                date.setDate(date.getDate() + 7);
+                if (x !== 14) {
+                    next15Days += (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear() + ", ";
+                } else {
+                    next15Days += (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear();
+                }
+            }
+            $("#show15weeks").html(next15Days).show();
+        }
     }
-
-    // Display the user's profile
-    function showLoggedIn() {
-        var profile = JSON.parse(localStorage.getItem('profile'));
-        document.getElementById('nick').textContent = profile.nickname;
-    }
-</script>*@
+</script>
 
 @RenderSection("scripts", required: false)
 </body>

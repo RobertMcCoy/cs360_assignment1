@@ -2,5 +2,11 @@
     ViewData["Title"] = "Admin Home Page";
 }
 <div>
-
+    <h4>Welcome to the Administrator Portal. Follow the links below to be taken to your administration pages.</h4>
+    <ul>
+        <li><a asp-controller="Admin" asp-action="GenerateSchedules">Generate Schedule for an entire season</a></li>
+        <li><a asp-controller="Admin" asp-action="CreateMatch">Create a single match</a></li>
+        <li>Matches can be edited by selecting "Edit Match" on the Matches page.</li>
+        <li>Members can be edited by selecting "Edit Member" on the Members page.</li>
+    </ul>
 </div>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace ChessClubManagement.Models
 {
@@ -12,6 +13,8 @@ namespace ChessClubManagement.Models
         }
 
         public int SeasonId { get; set; }
+        [Display(Name = "Season Name")]
+        [Required]
         public string SeasonName { get; set; }
         public DateTime? Wk1 { get; set; }
         public DateTime? Wk2 { get; set; }

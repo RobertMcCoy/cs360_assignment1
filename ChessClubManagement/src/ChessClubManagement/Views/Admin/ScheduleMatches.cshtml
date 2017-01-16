@@ -1,8 +1,35 @@
-@model ChessClubManagement.Models.Seasons
+@using Microsoft.EntityFrameworkCore.Update
+@model ChessClubManagement.ViewModels.GenerateMatchesViewModel
 @{
 	Layout = "_Layout";
     ViewData["Title"] = "Schedule Matches";
 }
 <div>
-
+    <br />
+    @if (@TempData["Results"] != null)
+    {
+        <div class="alert alert-danger">@TempData["Results"]</div>
+    }
+    <h1>Schedule Season Matches</h1>
+    <form asp-action="GenerateSchedules">
+        <div class="input-group">
+            <label class="input-group-addon">Season:</label>
+            <select asp-items="@ViewBag.SeasonDropDown" asp-for="SeasonId" class="form-control" onchange="javascript: GetDivisions(this.value);"></select>
+        </div>
+        <br/>
+        <div id="showdivisions" name="showdivisions"></div>
+        <br/>
+        <br/>
+        <div class="input-group">
+            <input type="hidden" id="datePickerDate" asp-for="StartingDate"/>
+            <label class="input-group-addon">Select Starting Date:</label>
+            <input data-provide="datepicker" class="form-control" name="datePicker" onchange="javascript: GetNext15Days(this.value);"/>
+        </div>
+        <br/>
+        <div id="show15weeks"></div>
+        <br/>
+        <br/>
+        <input type="submit" class="btn btn-info" value="Generate Schedules"/>
+    </form>
 </div>
+

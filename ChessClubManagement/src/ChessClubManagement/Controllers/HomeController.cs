@@ -52,6 +52,7 @@ namespace ChessClubManagement.Controllers
             {
                 Name = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value,
                 EmailAddress = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value,
+                PhoneNumber = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.MobilePhone)?.Value
             });
         }
 

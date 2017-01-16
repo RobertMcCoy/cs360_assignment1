@@ -8,15 +8,29 @@
   var lock = new Auth0Lock('@Model.ClientId', '@Model.Domain', {
     container: 'root',
     auth: {
-      redirectUrl: '@Model.CallbackUrl',
-      responseType: 'code',
-      params: {
-        scope: 'openid email nickname',
+        redirectUrl: '@Model.CallbackUrl',
+        responseType: 'code',
+        params: {
+        scope: 'openid email nickname username phonenumber',
         state: '@Model.State' ,
         nonce: '@Model.Nonce'
-      }
+        }
     },
-    allowedConnections: ['ChessClubManagement']
+    allowedConnections: ['ChessClubManagement'],
+    theme: {
+        primaryColor: "#31b0d5"
+    },
+    additionalSignUpFields: [
+    {
+        name: "PhoneNumber",
+        placeholder: "Enter your Phone #",
+        validator: function(phone) {
+            return {
+                valid: phone.length > 9,
+                hint: "Must be 9 digit phone number"
+            };
+        }
+    }]
   });
 
   lock.show();

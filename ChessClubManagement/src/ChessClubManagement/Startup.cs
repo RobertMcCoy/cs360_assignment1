@@ -48,7 +48,34 @@ namespace ChessClubManagement
                 options.ResponseType = "code";
                 options.CallbackPath = new PathString("/signin-auth0");
                 options.ClaimsIssuer = "Auth0";
+                options.SaveTokens = true;
+                options.Events = new OpenIdConnectEvents()
+                {
+                    OnTicketReceived = context =>
+                    {
+                        var identity = context.Principal.Identity as ClaimsIdentity;
+                        if (identity != null)
+                        {
+                            if (context.Properties.Items.ContainsKey(".TokenNames"))
+                            {
+                                string[] tokenNames = context.Properties.Items[".TokenNames"].Split(';');
+                                foreach (var tokenName in tokenNames)
+                                {
+                                    string tokenValue = context.Properties.Items[$".Token.{tokenName}"];
+                                    identity.AddClaim(new Claim(tokenName, tokenValue));
+                                }
+                            }
+                        }
+                        return Task.FromResult(0);
+                    }
+                };
+                options.Scope.Clear();
+                options.Scope.Add("openid");
+                options.Scope.Add("nickname");
+                options.Scope.Add("emailaddress");
+                options.Scope.Add("phone");
             });
+
             // Add framework services.
             services.AddMvc();
 

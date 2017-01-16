@@ -10,7 +10,7 @@
     Select Season:
     @foreach (var id in ViewBag.SeasonIdList)
     {
-        <a asp-action="Index" asp-route-id="@id" id="seasonId@id" class="btn btn-warning">@id</a>
+        <a asp-action="Index" asp-route-id="@id" id="seasonId@id" class="btn btn-info">@id</a>
     }
     <br />
     <br />
@@ -23,7 +23,7 @@
             {
                 foreach (DateTime s in matchList.Item2)
                 {
-                    <a asp-action="Index" asp-route-id="@ViewBag.id" asp-route-date="@s.ToString("MM-dd-yyyy")" id="dateId@s" class="btn btn-warning">@s.ToString("MM-dd-yyyy")</a>
+                    <a asp-action="Index" asp-route-id="@ViewBag.id" asp-route-date="@s.ToString("MM-dd-yyyy")" id="dateId@s" class="btn btn-info">@s.ToString("MM-dd-yyyy")</a>
                 }
             }
         }
