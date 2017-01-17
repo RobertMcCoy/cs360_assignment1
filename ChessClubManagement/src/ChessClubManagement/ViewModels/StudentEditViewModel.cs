@@ -8,7 +8,10 @@ namespace ChessClubManagement.ViewModels
 {
     public class StudentEditViewModel
     {
-        public Students Student { get; set; }
+        public Users User { get; set; }
+        public List<Students> StudentUsers { get; set; }
         public List<Matches> MatchHistory { get; set; }
+        public Students NewUserStudent { get; set; }
+        public int NewDivisionSeasonId { get; set; }
     }
 }

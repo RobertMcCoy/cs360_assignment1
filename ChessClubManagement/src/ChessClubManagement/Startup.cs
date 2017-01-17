@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -71,9 +72,10 @@ namespace ChessClubManagement
                 };
                 options.Scope.Clear();
                 options.Scope.Add("openid");
-                options.Scope.Add("nickname");
-                options.Scope.Add("emailaddress");
-                options.Scope.Add("phone");
+                options.Scope.Add("email");
+                options.Scope.Add("username");
+                options.Scope.Add("user_metadata");
+                options.Scope.Add("roles");
             });
 
             // Add framework services.
@@ -114,6 +116,8 @@ namespace ChessClubManagement
             });
 
             app.UseOpenIdConnectAuthentication(oidcOptions.Value);
+
+            app.UseStatusCodePages();
 
             app.UseMvc(routes =>
             {

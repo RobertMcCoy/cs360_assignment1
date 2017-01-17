@@ -3,50 +3,68 @@
 
 @{
     Layout = "_Layout";
-    ViewData["Title"] = Model.Student.StudentFname + " " + Model.Student.StudentLname;
+    ViewData["Title"] = Model.User.Nickname;
 }
 
 @{
-    if (TempData["SaveSuccess"] != null && TempData["SaveSuccess"].ToString().Equals("Success"))
+    if (TempData["Result"] != null && TempData["Result"].ToString().Equals("Added to division successfully"))
     {
         <div class="alert alert-success">
             Student was updated successfully.
         </div>
     }
-    else if (TempData["SaveSuccess"] != null && TempData["SaveSuccess"].ToString().Equals("Fail"))
+    else if (TempData["Result"] != null && !TempData["Result"].ToString().Equals("Added to division successfully"))
     {
         <div class="alert alert-danger">
-            Student was not updated.
+            @TempData["Result"]
         </div>
     }
 }
 
 <div row>
     <div class="col-md-6">
-        <h1>@Model.Student.StudentFname @Model.Student.StudentLname</h1>
-        <form asp-controller="Students" asp-action="Update" asp-route-id="Student.StudentId">
-            <input asp-for="@Model.Student.StudentId" type="hidden" />
+        <h1>@Model.User.Nickname</h1>
+        <div class="input-group">
+            <label class="input-group-addon">Name</label>
+            <input asp-for="@Model.User.Nickname" type="text" class="form-control" id="studentFnameTxt" placeholder="Student name" readonly="readonly"/>
+        </div>
+        <br/>
+        <br/>
+        <form asp-action="AddToDivision" method="post">
+            <input asp-for="@Model.User.Id" type="hidden" />
             <div class="input-group">
-                <label class="input-group-addon">First Name</label>
-                <input asp-for="@Model.Student.StudentFname" type="text" class="form-control" id="studentFnameTxt" placeholder="First Name" required/>
+                <label class="input-group-addon">Season</label>
+                <select asp-items="@ViewBag.SeasonDropDown" asp-for="@Model.NewDivisionSeasonId" id="seaondropdown" class="form-control" onchange="javascript: GetDivisionsForSeasonDropDown(this.value);"></select>
             </div>
-            <br/>
-            <div class="input-group">
-                <label  class="input-group-addon">Last Name</label>
-                <input asp-for="@Model.Student.StudentLname" type="text" class="form-control" id="studentLnameTxt" placeholder="First Name" required/>
-            </div>
-            <br/>
             <div class="input-group">
                 <label class="input-group-addon">Division</label>
-                <select asp-for="@Model.Student.StudentId" type="text" class="form-control" style="width: 65px" id="studentDivisionTxt" placeholder="Division" required>
-                    <option>A</option>
-                    <option>B</option>
-                    <option>C</option>
-                </select>
+                <select id="divisiondropdown" asp-for="@Model.NewUserStudent.DivisionId" class="form-control"></select>
             </div>
-            <br/>
-            <input type="submit" value="Save" id="saveStudent" class="btn btn-info"/>
+            <input type="submit" value="Add To Division" class="btn btn-info"/>
         </form>
+        <br />
+        <br />
+        <table class="table table-striped table-hover">
+            <tr>
+                <th>Season</th>
+                <th>Division</th>
+                <th></th>
+            </tr>
+            @foreach (var division in Model.StudentUsers)
+            {
+                <tr>
+                    <td>@division.Division.Season.SeasonName</td>
+                    <td>@division.Division.DivisionName</td>
+                    <td>
+                        @if (User.Claims.Any(c => c.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role" && c.Value == "admin"))
+                        {
+                            <form asp-action="RemoveDivisionFromUser" asp-route-id="@division.StudentId"><input type="submit" value="Remove From Division" class="btn btn-info"/></form>
+                        }
+                    </td>
+                </tr>
+            }
+        </table>
+        <input type="submit" value="Save" id="saveStudent" class="btn btn-info"/>
     </div>
     <div class="col-md-6">
         <h1>Match History</h1>
@@ -54,7 +72,7 @@
             @foreach (var match in Model.MatchHistory)
             {
                 <li>
-                    @DateTime.Parse(match.MatchDate.ToString()).ToString("MM/dd/yyyy") - @match.Student1.StudentFname @match.Student1.StudentLname vs. @match.Student2.StudentFname @match.Student2.StudentLname
+                    @DateTime.Parse(match.MatchDate.ToString()).ToString("MM/dd/yyyy") - @match.Student1.User.Nickname vs. @match.Student2.User.Nickname
                 </li>
             }
         </ul>

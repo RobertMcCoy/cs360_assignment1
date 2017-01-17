@@ -1,0 +1,33 @@
+﻿@using ChessClubManagement.ViewModels
+@model AdminSeasonViewModel
+
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Season Admin";
+}
+
+<div>
+    <h1>Edit Seasons</h1>
+    <hr />
+    <form asp-action="AddNewSeason">
+        <div class="input-group">
+            <label>Season Name</label>
+            <input type="text" asp-for="NewSeasonName" class="form-control" required/>
+        </div>
+        <input type="submit" class="btn btn-info" value="Add New Season"/>
+    </form>
+    <br />
+    <table class="table table-bordered table-hover">
+        <tr>
+            <th>Season ID</th>
+            <th>Season Name</th>
+        </tr>
+        @foreach (var season in Model.Seasons)
+        {
+            <tr>
+                <td><a asp-action="EditSeason" asp-route-id="@season.SeasonId">@season.SeasonId</a></td>
+                <td>@season.SeasonName</td>
+            </tr>
+        }
+    </table>
+</div>

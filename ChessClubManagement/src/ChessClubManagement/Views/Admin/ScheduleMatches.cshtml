@@ -6,7 +6,7 @@
 }
 <div>
     <br />
-    @if (@TempData["Results"] != null)
+    @if (TempData["Results"] != null && TempData["Results"] != string.Empty)
     {
         <div class="alert alert-danger">@TempData["Results"]</div>
     }

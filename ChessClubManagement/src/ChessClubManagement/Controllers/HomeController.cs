@@ -50,9 +50,9 @@ namespace ChessClubManagement.Controllers
         {
             return View(new UserProfileViewModel()
             {
-                Name = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value,
+                Name = User.Claims.FirstOrDefault(c => c.Type == "username")?.Value,
                 EmailAddress = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value,
-                PhoneNumber = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.MobilePhone)?.Value
+                PhoneNumber = JObject.Parse(User.Claims.FirstOrDefault(c => c.Type == "user_metadata").Value)["phonenumber"].ToString()
             });
         }
 

@@ -4,12 +4,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using ChessClubManagement.Models;
 using ChessClubManagement.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace ChessClubManagement.Controllers
 {
+    [Authorize(Roles = "admin")]
     public class AdminController : Controller
     {
         private readonly AdminRepository _repository;
@@ -76,6 +78,34 @@ namespace ChessClubManagement.Controllers
             TempData["Results"] = _repository.GenerateSchedules(viewModel);
             if (TempData["Results"].Equals("Season Created Successfully")) return RedirectToAction("Index", "Matches", new {id = viewModel.SeasonId, date = viewModel.StartingDate.Value.ToString("MM-dd-yyyy")});
             return RedirectToAction("ScheduleMatches");
+        }
+
+        public IActionResult AddNewSeason(AdminSeasonViewModel viewModel)
+        {
+            int newSeasonId = _repository.AddNewSeason(viewModel);
+            return RedirectToAction("EditSeason", new { id = newSeasonId });
+        }
+
+        public IActionResult Seasons()
+        {
+            return View(_repository.GetAdminSeasonViewModel());
+        }
+
+        public IActionResult EditSeason(int id)
+        {
+            return View(_repository.GetAdminSeasonEditViewModel(id));
+        }
+
+        public IActionResult AddNewDivision(AdminSeasonEditViewModel viewModel)
+        {
+            _repository.AddNewDivision(viewModel);
+            return RedirectToAction("EditSeason", new { id = viewModel.CurrentSeasonId });
+        }
+
+        public IActionResult DeleteDivision(int id, int seasonId)
+        {
+            _repository.DeleteDivision(id);
+            return RedirectToAction("EditSeason", new { id = seasonId });
         }
     }
 }

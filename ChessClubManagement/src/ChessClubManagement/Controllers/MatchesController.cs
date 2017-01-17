@@ -1,5 +1,6 @@
 ﻿using ChessClubManagement.Models;
 using ChessClubManagement.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ChessClubManagement.Controllers
@@ -30,12 +31,14 @@ namespace ChessClubManagement.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "admin")]
         public IActionResult Edit(int id)
         {
             return View(_repository.GetMatchById(id));
         }
 
         [HttpGet]
+        [Authorize(Roles = "admin")]
         public IActionResult Save(Matches match)
         {
             _repository.UpdateMatch(match);

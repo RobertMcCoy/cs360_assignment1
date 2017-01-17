@@ -11,7 +11,7 @@
         redirectUrl: '@Model.CallbackUrl',
         responseType: 'code',
         params: {
-        scope: 'openid email nickname username phonenumber',
+        scope: 'openid username user_metadata email roles',
         state: '@Model.State' ,
         nonce: '@Model.Nonce'
         }
@@ -22,7 +22,7 @@
     },
     additionalSignUpFields: [
     {
-        name: "PhoneNumber",
+        name: "phonenumber",
         placeholder: "Enter your Phone #",
         validator: function(phone) {
             return {

@@ -1,5 +1,7 @@
 ﻿using ChessClubManagement.Models;
 using ChessClubManagement.ViewModels;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ChessClubManagement.Controllers
@@ -17,20 +19,35 @@ namespace ChessClubManagement.Controllers
             return View(_repository.GetStudents());
         }
 
+        [Authorize(Roles = "admin")]
         public IActionResult Edit(int id)
         {
+            ViewBag.SeasonDropDown = _repository.GetSeasonDropDown();
             return View(_repository.GetStudentEditVmById(id));
         }
 
+        [HttpPost]
+        public ActionResult GetDivisionsBySeason(int id)
+        {
+            return Json(_repository.GetDivisionsBySeason(id));
+        }
+
+        [Authorize(Roles = "admin")]
         public IActionResult Update(StudentEditViewModel viewModel)
         {
             TempData["SaveSuccess"] = _repository.SaveStudent(viewModel) > 0 ? "Success" : "Fail";
-            return RedirectToAction("Edit", new { id = viewModel.Student.StudentId });
+            return RedirectToAction("Edit", new { id = viewModel.User.Id });
         }
 
         public IActionResult Member(int id)
         {
             return View(_repository.GetStudentById(id));
+        }
+
+        public IActionResult AddToDivision(StudentEditViewModel viewModel)
+        {
+            TempData["Result"] = _repository.AddStudentToDivision(viewModel);
+            return RedirectToAction("Edit", new { id = viewModel.User.Id });
         }
     }
 }

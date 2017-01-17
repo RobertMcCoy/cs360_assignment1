@@ -1,0 +1,34 @@
+﻿@model ChessClubManagement.Models.AdminSeasonEditViewModel
+
+@{
+    Layout = "_Layout";
+}
+
+<div>
+    <h1>Edit Season</h1>
+    <hr />
+    <form asp-action="AddNewDivision">
+        <div class="input-group">
+            <label class="input-group-addon">Division Name</label>
+            <input type="hidden" asp-for="@Model.CurrentSeasonId" />
+            <input type="text" class="form-control" asp-for="@Model.NewDivision.DivisionName" />
+        </div>
+        <input type="submit" class="btn btn-info" value="Add New Division"/>
+    </form>
+    <br />
+    <table class="table table-hover table-striped">
+        <tr>
+            <th>Division ID</th>
+            <th>Division Name</th>
+            <th></th>
+        </tr>
+        @foreach (var division in Model.SeasonDivisions)
+        {
+            <tr>
+                <td>@division.DivisionId</td>
+                <td>@division.DivisionName</td>
+                <td><form asp-action="DeleteDivision" asp-route-id="@division.DivisionId" asp-route-seasonId="@Model.CurrentSeasonId"><input type="submit" value="Delete Division" class="btn btn-info"/></form></td>
+            </tr>
+        }
+    </table>
+</div>

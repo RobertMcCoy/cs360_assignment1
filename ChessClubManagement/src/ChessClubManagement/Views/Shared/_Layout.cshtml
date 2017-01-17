@@ -37,11 +37,15 @@
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
                     <li><a asp-area="" asp-controller="Members" asp-action="Index">Members</a></li>
                     <li><a asp-area="" asp-controller="Matches" asp-action="Index">Matches</a></li>
+                    @if (User.Claims.Any(c => c.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role" && c.Value == "admin"))
+                    {
+                        <li><a asp-area="" asp-controller="Admin" asp-action="Index">Administration</a></li>
+                    }
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <li><a asp-controller="Home" asp-action="Profile" asp-route-id="">Hello @User.Claims.First(c => c.Type.Equals("nickname")).Value</a></li>
+                        <li><a asp-controller="Home" asp-action="Profile" asp-route-id="">Hello @User.Claims.FirstOrDefault(c => c.Type.Equals("username")).Value</a></li>
                         <li><a asp-area="" asp-controller="Home" asp-action="Logout">Logout</a></li>
                     }
                     else
@@ -114,8 +118,33 @@
 
     }
 </script>
-
+    
     <script language="javascript" type="text/javascript">
+        function GetDivisionsForSeasonDropDown(_seasonId) {
+            $("#divisiondropdown").html('<option value="0">Loading Divisions...</option>').show();
+        var url = "/Members/GetDivisionsBySeason/";
+
+        $.ajax({
+            url: url,
+            data: { id: _seasonId },
+            cache: false,
+            type: "POST",
+            success: function (data) {
+                var markup = "<option value='0'>Select A Division</option>";
+                for (var x = 0; x < data.length; x++) {
+                    markup += "<option value=" + data[x].value + ">" + data[x].text + "</option>";
+                }
+                $("#divisiondropdown").html(markup).show();
+            },
+            error: function (reponse) {
+                alert("error : " + reponse);
+            }
+        });
+
+    }
+    </script>
+
+<script language="javascript" type="text/javascript">
     function GetStudent2DropDown(_divId) {
         $("#student2dropdown").html("<option value='0'>Loading Students...</option>").show();
         var url = "/Admin/GetStudentsInDivision/";

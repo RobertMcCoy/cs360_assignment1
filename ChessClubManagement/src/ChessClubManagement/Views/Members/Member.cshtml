@@ -1,41 +1,54 @@
-@model ChessClubManagement.Models.Students
+@using ChessClubManagement.ViewModels
+@model ChessClubManagement.ViewModels.MemberViewModel
 
 @{
 	Layout = "_Layout";
     ViewData["Title"] = "Member";
-    //Please be sure to double-check that all the information Prof. Sedlmeyer wants is here!
-    //I'm still without Blackboard access, so I'm unable to do so until I call the helpdesk.
 }
 <div>
-    <h1>(Member Name)</h1>
-    <ul style="list-style: none;">
-        <li><b>Division: </b>(division)</li>
-        <li><b>Point Total: </b> (# of points)</li>
-        <li><b>Division Ranking: </b>(rank) out of (# members in division)</li>
-        <li><b>Overall Ranking: </b>(rank) out of (# members total)</li>
-    </ul>
-    <br />
-    <h2>Match Listing</h2>
+    <h1>@Model.Member.Nickname</h1>
     <hr />
-    <table class="table table-striped table-hover">
-        <tr>
-            <th>Date</th>
-            <th>Opponent</th>
-            <th>Result</th>
-            <th>Points</th>
-        </tr>
-        @foreach (/*logic goes here*/) //Using the same basic logic as Members/Index.cshtml to construct the table
-        {
+    @foreach (var division in Model.Divisions)
+    {
+        <ul>
+            <li><b>Division: </b>@division.Division.DivisionName</li>
+            <li><b>Point Total: </b>@division.PlayerStats.Item1</li>
+            <li><b>Division Ranking: </b>@division.PlayerStats.Item2 out of @division.PlayerStats.Item3</li>
+            <li><b>Overall Ranking: </b>@division.PlayerStats.Item4 out of @division.PlayerStats.Item5</li>
+        </ul>
+        <br/>
+        <h2>Match Listing</h2>
+        <hr/>
+        <table class="table table-striped table-hover">
             <tr>
-                <td>(date goes here)</td>
-                <td>(opponent goes here)</td>
-                <td>(result goes here)</td>
-                <td>(points go here)</td>
+                <th>Date</th>
+                <th>Opponent</th>
+                <th>Result</th>
+                <th>Points</th>
             </tr>
+            @foreach (var match in Model.Matches)
+            {
+                if (match.SeasonId == division.Division.SeasonId)
+                {
+                     <tr>
+                         <td><a asp-controller="Matches" asp-action="Match" asp-route-id="@match.MatchId">@match.MatchDate.Value.ToString("MM/dd/yyyy")</a></td>
+                         @if (@match.Student1.User.Id == @Model.Member.Id)
+                         {
+                            <td>@match.Student2.User.Nickname</td>
+                            <td>@match.Student1Result</td>
+                            <td>@match.Student1Score</td>
+                         }
+                         else
+                         {
+                             <td>@match.Student1.User.Nickname</td>
+                             <td>@match.Student2Result</td>
+                             <td>@match.Student2Score</td>
+                         }
+                     </tr>
+                }
 
-        }
-        
-    </table>
+            }
+        </table>
+    }
     <br />
-    <button type="button">Edit</button>
 </div>

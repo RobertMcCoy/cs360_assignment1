@@ -20,6 +20,11 @@ namespace ChessClubManagement.Models
             _context = context;
         }
 
+        public List<string> GetDivisionsBySeason(int id)
+        {
+            return _context.Divisions.Where(d => d.SeasonId == id).Select(d => d.DivisionName).ToList();
+        }
+
         public List<SelectListItem> GetSeasonDropDown()
         {
             var list = _context.Seasons.Select(s => new SelectListItem()
@@ -29,11 +34,6 @@ namespace ChessClubManagement.Models
             }).ToList();
             list.Insert(0, new SelectListItem() {Text="Select Season", Value="Select Season"});
             return list;
-        }
-
-        public List<string> GetDivisionsBySeason(int id)
-        {
-            return _context.Divisions.Where(d => d.SeasonId == id).Select(d => d.DivisionName).ToList();
         }
 
         public Tuple<string, int> CreateMatch(Matches newMatch)
@@ -111,6 +111,59 @@ namespace ChessClubManagement.Models
                 returnValue += "Invalid Input";
             }
             return returnValue;
+        }
+
+        public int AddNewSeason(AdminSeasonViewModel viewModel)
+        {
+            var newSeason = new Seasons()
+            {
+                SeasonName = viewModel.NewSeasonName
+            };
+            _context.Seasons.Add(newSeason);
+            return newSeason.SeasonId;
+        }
+
+        public AdminSeasonViewModel GetAdminSeasonViewModel()
+        {
+            AdminSeasonViewModel viewModel = new AdminSeasonViewModel()
+            {
+                Seasons = _context.Seasons.ToList()
+            };
+            return viewModel;
+        }
+
+        public AdminSeasonEditViewModel GetAdminSeasonEditViewModel(int id)
+        {
+            var viewModel = new AdminSeasonEditViewModel()
+            {
+                CurrentSeasonId = id,
+                NewDivision = new Divisions(),
+                SeasonDivisions = _context.Divisions.Where(d => d.SeasonId == id).ToList()
+            };
+            return viewModel;
+        }
+
+        public void AddNewDivision(AdminSeasonEditViewModel viewModel)
+        {
+            if (viewModel.NewDivision.DivisionName != string.Empty)
+            {
+                if (
+                    !_context.Divisions.Any(
+                        d => d.DivisionName.Equals(viewModel.NewDivision.DivisionName) && d.SeasonId == viewModel.CurrentSeasonId))
+                {
+                    viewModel.NewDivision.SeasonId = viewModel.CurrentSeasonId;
+                    _context.Divisions.Add(viewModel.NewDivision);
+                    _context.SaveChanges();
+                }
+            }
+        }
+
+        public void DeleteDivision(int id)
+        {
+            if (_context.Matches.Any(m => m.Student1.DivisionId == id || m.Student2.DivisionId == id)) return;
+            var divisionToDelete = _context.Divisions.Single(d => d.DivisionId == id);
+            _context.Divisions.Remove(divisionToDelete);
+            _context.SaveChanges();
         }
     }
 }

@@ -44,7 +44,7 @@
                     <tr>
                         <td>
                             @match.Student1.User.Nickname
-                            @(match.Student1Color != string.Empty ? Html.Raw("(" + match.Student1Color + ") vs. " + match.Student2.User.Nickname + "(" + match.Student2Color + ")") : Html.Raw("vs. " + match.Student2.User.Nickname + " " + match.Student2.User.Nickname))
+                            @(match.Student1Color != null ? Html.Raw("(" + match.Student1Color + ") vs. " + match.Student2.User.Nickname + "(" + match.Student2Color + ")") : Html.Raw("vs. " + match.Student2.User.Nickname + " " + match.Student2.User.Nickname))
                         </td>
                         <td>
                             @{
@@ -125,9 +125,12 @@
                                         </td>
                                         <td>@match.TotalMoves</td>
                                         <td>
-                                            <form asp-controller="Matches" asp-action="Edit" asp-route-id="@match.MatchId">
-                                                <input type="submit" value="Edit Match" class="btn btn-info" />
-                                            </form>
+                                            @if (User.Claims.Any(c => c.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role" && c.Value == "admin"))
+                                            {
+                                                <form asp-controller="Matches" asp-action="Edit" asp-route-id="@match.MatchId">
+                                                    <input type="submit" value="Edit Match" class="btn btn-info"/>
+                                                </form>
+                                            }
                                         </td>
                                     </tr>
                                                     }
