@@ -30,6 +30,20 @@
         </div>
         <br/>
         <br/>
+        <form asp-action="UpdateRoles" asp-route-id="@Model.User.Id">
+            <div class="input-group">
+                <label class="input-group-addon">Role</label>
+                <input type="hidden" asp-for="@Model.User.Id"/>
+                <select class="form-control" asp-for="UserRole">
+                    <option value="0">Member</option>
+                    <option value="1">Official</option>
+                    <option value="2">Admin</option>
+                </select>
+            </div>
+            <input type="submit" value="Update Role" class="btn btn-info"/>
+        </form>
+        <br />
+        <br />
         <form asp-action="AddToDivision" method="post">
             <input asp-for="@Model.User.Id" type="hidden" />
             <div class="input-group">
@@ -58,7 +72,7 @@
                     <td>
                         @if (User.Claims.Any(c => c.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role" && c.Value == "admin"))
                         {
-                            <form asp-action="RemoveDivisionFromUser" asp-route-id="@division.StudentId"><input type="submit" value="Remove From Division" class="btn btn-info"/><input type="hidden" asp-for="User.Id"/></form>
+                            <form asp-action="RemoveDivisionFromUser" asp-route-id="@division.StudentId"><input type="submit" value="Remove From Division" class="btn btn-info"/><input type="hidden" asp-for="@Model.User.Id"/></form>
                         }
                     </td>
                 </tr>

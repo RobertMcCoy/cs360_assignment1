@@ -3,6 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ChessClubManagement.Controllers;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+using ChessClubManagement.ViewModels;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ChessClubManagement.Models
 {
@@ -98,7 +104,7 @@ namespace ChessClubManagement.Models
             }
             if (match.Student1Score == null && match.Student2Score == null)
                 return "Please select the results for both players";
-            if (match.Student1Color.Equals(match.Student2Color)) return "Both players cannot be the same color";
+            if (match.Student1Color != string.Empty && match.Student2Color != string.Empty && match.Student1Color.Equals(match.Student2Color)) return "Both players cannot be the same color";
             if (match.Student1Score == 1 && match.Student2Score == 1) return "Both players can not be winners";
             if ((match.Student1Score == null && match.Student2Score != null) ||
                 (match.Student2Score == null && match.Student1Score != null)) return "Both players require a score.";
@@ -109,6 +115,45 @@ namespace ChessClubManagement.Models
             var success = _context.SaveChanges();
             if (success > 0) return "Match Updated Successfully";
             return "Error updating match";
+        }
+
+        public UserRoleModel GetMatchEditViewModel(int id)
+        {
+            if (ClaimsPrincipal.Current != null)
+            {
+                if (ClaimsPrincipal.Current.Identity.IsAuthenticated)
+                {
+                    if (ClaimsPrincipal.Current.Claims.FirstOrDefault(
+                                c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")
+                            .Value.Substring(6) != null)
+                    {
+                        return new UserRoleModel()
+                        {
+                            UserRole =
+                                _context.Users.Single(u => u.Id.ToString() ==
+                                                           ClaimsPrincipal.Current.Claims.FirstOrDefault(
+                                                                   c =>
+                                                                       c.Type ==
+                                                                       "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")
+                                                               .Value.Substring(6)).UserRole.Value
+                        };
+                    }
+                }
+            }
+            return null;
+        }
+
+        public int GetUserRole(string substring)
+        {
+            if (_context.Users.Any(s => s.Id.ToString() == substring))
+            {
+                if (_context.Users.Single(s => s.Id.ToString() == substring).UserRole.HasValue)
+                {
+                    var temp = _context.Users.Single(s => s.Id.ToString().Equals(substring));
+                    return _context.Users.Single(s => s.Id.ToString().Equals(substring)).UserRole.Value;
+                }
+            }
+            return 0;
         }
     }
 }

@@ -21,7 +21,7 @@
                     @if (User.Claims.Any(c => c.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role" && c.Value == "admin"))
                     {
                         <form asp-controller="Members" asp-action="Edit" asp-route-id="@student.Id">
-                            <input type="submit" value="Edit Student" class="btn btn-info"/>
+                            <input type="submit" value="Edit Member" class="btn btn-info"/>
                         </form>
                     }
                 </td>

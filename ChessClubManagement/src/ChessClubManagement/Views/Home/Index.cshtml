@@ -7,7 +7,9 @@
         <h1>Welcome to the Chess Club Management System</h1>
         <ul>
             <li><a asp-controller="Members" asp-action="Standings">View Current Rankings</a></li>
-            <li><a asp-controller="Matches" asp-action="Index">View Upcoming Matches</a></li>
+            <li><a asp-controller="Members" asp-action="Index">View Members</a></li>
+            <li><a asp-controller="Matches" asp-action="Index">View Matches</a></li>
+            <li>Officials can edit matches on the "Matches" tab above (An Administrator must designate you as this first)</li>
             @if (User.Claims.Any(c => c.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role" && c.Value == "admin"))
             {
                 <li><a asp-controller="Admin" asp-action="Index">Access Administrator Portal</a></li>

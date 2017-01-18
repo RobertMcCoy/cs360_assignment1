@@ -42,7 +42,8 @@ namespace ChessClubManagement.Models
                         .ThenInclude(s => s.User)
                         .Include(s => s.Student2)
                         .ThenInclude(s => s.User)
-                        .ToList()
+                        .ToList(),
+                UserRole = _context.Users.First(s => s.Id == id).UserRole.GetValueOrDefault()
             };
             return studentEditViewModel;
         }
@@ -236,6 +237,14 @@ namespace ChessClubManagement.Models
             var success = _context.SaveChanges();
             if (success > 0) return "Division Successfully Removed";
             return "Matches already scheduled for this division";
+        }
+
+        public void UpdateUserRoles(int id, StudentEditViewModel viewModel)
+        {
+            var studentToUpdate = _context.Users.Single(s => s.Id == id);
+            studentToUpdate.UserRole = viewModel.UserRole;
+            _context.Users.Update(studentToUpdate);
+            _context.SaveChanges();
         }
     }
 }

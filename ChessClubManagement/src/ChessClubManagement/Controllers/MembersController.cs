@@ -64,5 +64,12 @@ namespace ChessClubManagement.Controllers
             TempData["Result"] = _repository.RemoveDivisionFromStudent(id);
             return RedirectToAction("Edit", viewModel.User.Id);
         }
+
+        [Authorize(Roles = "admin")]
+        public IActionResult UpdateRoles(int id, StudentEditViewModel viewModel)
+        {
+            _repository.UpdateUserRoles(id, viewModel);
+            return RedirectToAction("Edit", new { id = viewModel.User.Id });
+        }
     }
 }

@@ -4,5 +4,70 @@
     ViewData["Title"] = "Match";
 }
 <div>
-
+    <h1>Match: @Model.Student1.User.Nickname vs. @Model.Student2.User.Nickname</h1>
+    <hr />
+    <div class="row">
+        <div class="col-md-6">
+            <div class="input-group">
+                <label class="input-group-addon">Member: </label>
+                <input type="text" class="form-control" value="@Model.Student1.User.Nickname" readonly="readonly"/>
+            </div>
+            <br/>
+            <div class="input-group">
+                <label class="input-group-addon">Member Color: </label>
+                <select asp-for="Student1Color" class="form-control" id="student1color" readonly="readonly">
+                    <option value="null"></option>
+                    <option value="B">B</option>
+                    <option value="W">W</option>
+                </select>
+            </div>
+            <br/>
+            <div class="input-group">
+                <label class="input-group-addon">Member Result: </label>
+                <select asp-for="Student1Result" class="form-control" id="student1result" readonly="readonly">
+                    <option value="null"></option>
+                    <option value="W">Win</option>
+                    <option value="L">Loss</option>
+                    <option value="D">Draw</option>
+                    <option value="X">Forfeit</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="input-group">
+                <label class="input-group-addon">Member: </label>
+                <input type="text" class="form-control" value="@Model.Student2.User.Nickname" readonly="readonly"/>
+            </div>
+            <br/>
+            <div class="input-group">
+                <label class="input-group-addon">Member Color: </label>
+                <select asp-for="Student2Color" class="form-control" id="student2color" readonly="readonly">
+                    <option value="null"></option>
+                    <option value="B">B</option>
+                    <option value="W">W</option>
+                </select>
+            </div>
+            <br/>
+            <div class="input-group">
+                <label class="input-group-addon">Member Result: </label>
+                <select asp-for="Student2Result" class="form-control" id="student2result" readonly="readonly">
+                    <option value="null"></option>
+                    <option value="W">Win</option>
+                    <option value="L">Loss</option>
+                    <option value="D">Draw</option>
+                    <option value="X">Forfeit</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="row">
+        <div class="col-md-4 col-md-offset-3">
+            <div class="input-group">
+                <label class="input-group-addon">Total Moves</label>
+                <input type="text" asp-for="TotalMoves" class="form-control" readonly="readonly"/>
+            </div>
+            <br/>
+        </div>
+    </div>
 </div>

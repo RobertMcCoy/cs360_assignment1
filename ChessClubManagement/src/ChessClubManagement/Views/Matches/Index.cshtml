@@ -1,5 +1,5 @@
 ﻿@using System.Globalization
-@model System.Collections.Generic.List<ChessClubManagement.Models.Matches>
+@model ChessClubManagement.ViewModels.MatchesViewModel
 @{
     Layout = "_Layout";
     ViewData["Title"] = "Members";
@@ -37,14 +37,16 @@
                 <th>Moves</th>
                 <th></th>
             </tr>
-            @foreach (var match in Model)
+            @foreach (var match in Model.Matches)
             {
                 if (ViewBag.date == null)
                 {
                     <tr>
                         <td>
-                            @match.Student1.User.Nickname
-                            @(match.Student1Color != null ? Html.Raw("(" + match.Student1Color + ") vs. " + match.Student2.User.Nickname + "(" + match.Student2Color + ")") : Html.Raw("vs. " + match.Student2.User.Nickname + " " + match.Student2.User.Nickname))
+                            <a asp-action="Match" asp-route-id="@match.MatchId">
+                                @match.Student1.User.Nickname
+                                @(match.Student1Color != null ? Html.Raw("(" + match.Student1Color + ") vs. " + match.Student2.User.Nickname + "(" + match.Student2Color + ")") : Html.Raw("vs. " + match.Student2.User.Nickname + " " + match.Student2.User.Nickname))
+                            </a>
                         </td>
                         <td>
                             @{
@@ -61,7 +63,6 @@
                                     else if (match.Student1Result.Equals("D"))
                                     {
                                         @Html.Raw("Draw")
-                                        ;
                                     }
                                     else if (match.Student2Result.Equals("W"))
                                     {
@@ -80,16 +81,21 @@
                         </td>
                         <td>@match.TotalMoves</td>
                         <td>
-                            <form asp-controller="Matches" asp-action="Edit" asp-route-id="@match.MatchId"><input type="submit" value="Edit Match" class="btn btn-info"/>
-                            </form></td>
+                            @if (User.Claims.Any(c => c.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role" && c.Value == "admin") || Model.UserRole > 0)
+                            {
+                                <form asp-controller="Matches" asp-action="Edit" asp-route-id="@match.MatchId"><input type="submit" value="Edit Match" class="btn btn-info"/></form>
+                            }
+                        </td>
                     </tr>
                                 }
                                 else if (match.MatchDate.Value != null && ViewBag.date.Equals(match.MatchDate.Value.Date.ToString("MM-dd-yyyy")))
                                 {
                                     <tr>
                                         <td>
-                                            @match.Student1.User.Nickname
-                                            @(match.Student1Color != string.Empty ? Html.Raw("(" + match.Student1Color + ") vs. " + match.Student2.User.Nickname + " (" + match.Student2Color + ")") : Html.Raw("vs. " + match.Student2.User.Nickname + " " + match.Student2.User.Nickname))
+                                            <a asp-action="Match" asp-route-id="@match.MatchId">
+                                                @match.Student1.User.Nickname
+                                                @(match.Student1Color != string.Empty ? Html.Raw("(" + match.Student1Color + ") vs. " + match.Student2.User.Nickname + " (" + match.Student2Color + ")") : Html.Raw("vs. " + match.Student2.User.Nickname + " " + match.Student2.User.Nickname))
+                                            </a>
                                         </td>
                                         <td>
                                             @{
@@ -125,7 +131,7 @@
                                         </td>
                                         <td>@match.TotalMoves</td>
                                         <td>
-                                            @if (User.Claims.Any(c => c.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role" && c.Value == "admin"))
+                                            @if (User.Claims.Any(c => c.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role" && c.Value == "admin") || Model.UserRole > 0)
                                             {
                                                 <form asp-controller="Matches" asp-action="Edit" asp-route-id="@match.MatchId">
                                                     <input type="submit" value="Edit Match" class="btn btn-info"/>

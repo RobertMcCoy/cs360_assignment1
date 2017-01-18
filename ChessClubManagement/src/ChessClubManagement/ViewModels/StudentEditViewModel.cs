@@ -13,5 +13,6 @@ namespace ChessClubManagement.ViewModels
         public List<Matches> MatchHistory { get; set; }
         public Students NewUserStudent { get; set; }
         public int NewDivisionSeasonId { get; set; }
+        public int UserRole { get; set; }
     }
 }
