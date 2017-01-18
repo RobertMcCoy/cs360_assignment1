@@ -37,6 +37,11 @@ namespace ChessClubManagement.Controllers
             return View();
         }
 
+        public IActionResult Reset()
+        {
+            return View();
+        }
+
         [HttpGet]
         public IActionResult Login(string returnUrl = null)
         {

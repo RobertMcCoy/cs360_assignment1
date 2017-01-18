@@ -36,6 +36,7 @@
                 <ul class="nav navbar-nav">
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
                     <li><a asp-area="" asp-controller="Members" asp-action="Index">Members</a></li>
+                    <li><a asp-area="" asp-controller="Members" asp-action="Standings">Rankings</a></li>
                     <li><a asp-area="" asp-controller="Matches" asp-action="Index">Matches</a></li>
                     @if (User.Claims.Any(c => c.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role" && c.Value == "admin"))
                     {

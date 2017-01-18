@@ -1,7 +1,10 @@
-﻿using ChessClubManagement.Models;
+﻿using System;
+using System.Globalization;
+using ChessClubManagement.Models;
 using ChessClubManagement.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authorization.Infrastructure;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ChessClubManagement.Controllers
@@ -12,6 +15,12 @@ namespace ChessClubManagement.Controllers
         public MembersController(ChessClubContext context)
         {
             _repository = new StudentRepository(context);
+        }
+
+        public IActionResult Standings(StandingsViewModel viewModel)
+        {
+            ViewBag.SeasonDropDown = _repository.GetSeasonDropDown();
+            return View(new StandingsViewModel() { Rankings = _repository.GetStandings(viewModel.DivisionId), DivisionId = viewModel.DivisionId});
         }
 
         public IActionResult Index()

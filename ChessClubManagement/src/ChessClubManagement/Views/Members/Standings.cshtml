@@ -1,0 +1,36 @@
+﻿@model ChessClubManagement.ViewModels.StandingsViewModel
+
+@{
+    Layout = "_Layout";
+}
+
+<br />
+<form asp-action="Standings" method="post">
+    <div class="input-group">
+        <label class="input-group-addon">Season</label>
+        <select asp-items="@ViewBag.SeasonDropDown" id="seaondropdown" class="form-control" onchange="javascript: GetDivisionsForSeasonDropDown(this.value);"></select>
+    </div>
+    <div class="input-group">
+        <label class="input-group-addon">Division</label>
+        <select id="divisiondropdown" class="form-control" asp-for="DivisionId"></select>
+    </div>
+    <input type="submit" class="btn btn-info" value="Filter Rankings"/>
+</form>
+<br />
+<div>
+    <table class="table table-hover table-striped">
+        <tr>
+            <th>Name</th>
+            <th>Division</th>
+            <th>Total Points</th>
+        </tr>
+        @foreach (var ranking in Model.Rankings)
+        {
+            <tr>
+                <td><a asp-controller="Members" asp-action="Member" asp-route-id="@ranking.Id">@ranking.Nickname</a></td>
+                <td>@ranking.DivisionName</td>
+                <td>@ranking.Total</td>
+            </tr>
+        }
+    </table>
+</div>

@@ -13,7 +13,7 @@ namespace ChessClubManagement.Models
 {
     internal class AdminRepository
     {
-        private ChessClubContext _context;
+        private readonly ChessClubContext _context;
 
         public AdminRepository(ChessClubContext context)
         {
@@ -32,7 +32,7 @@ namespace ChessClubManagement.Models
                 Text = s.SeasonName,
                 Value = s.SeasonId.ToString()
             }).ToList();
-            list.Insert(0, new SelectListItem() {Text="Select Season", Value="Select Season"});
+            list.Insert(0, new SelectListItem() { Text="Select Season", Value="Select Season" });
             return list;
         }
 
