@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ChessClubManagement.Controllers
 {
+    [Authorize]
     public class MatchesController : Controller
     {
         private readonly MatchesRepository _repository;

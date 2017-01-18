@@ -46,7 +46,6 @@
                 <ul class="nav navbar-nav navbar-right">
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <li><a asp-controller="Home" asp-action="Profile" asp-route-id="">Hello @User.Claims.FirstOrDefault(c => c.Type.Equals("username")).Value</a></li>
                         <li><a asp-area="" asp-controller="Home" asp-action="Logout">Logout</a></li>
                     }
                     else
