@@ -15,6 +15,7 @@ namespace ChessClubManagement.Models
         public string Password { get; set; }
         public string Nickname { get; set; }
         public string PhoneNumber { get; set; }
+        public int? UserRole { get; set; }
 
         public virtual ICollection<Students> Students { get; set; }
     }
