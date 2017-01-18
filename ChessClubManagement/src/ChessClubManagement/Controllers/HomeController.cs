@@ -17,7 +17,9 @@ using Microsoft.Extensions.Options;
 using System.Net;
 using System.Net.Http;
 using System.Text;
+using ChessClubManagement.Models;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RestSharp;
@@ -27,10 +29,12 @@ namespace ChessClubManagement.Controllers
     public class HomeController : Controller
     {
         private readonly IOptions<OpenIdConnectOptions> _options;
+        private readonly HomeRepository _repository;
 
-        public HomeController(IOptions<OpenIdConnectOptions> options)
+        public HomeController(IOptions<OpenIdConnectOptions> options, ChessClubContext context)
         {
             _options = options;
+            _repository = new HomeRepository(context);
         }
 
         public IActionResult Index() {
@@ -57,7 +61,8 @@ namespace ChessClubManagement.Controllers
             {
                 Name = User.Claims.FirstOrDefault(c => c.Type == "username")?.Value,
                 EmailAddress = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value,
-                PhoneNumber = JObject.Parse(User.Claims.FirstOrDefault(c => c.Type == "user_metadata").Value)["phonenumber"].ToString()
+                PhoneNumber = JObject.Parse(User.Claims.FirstOrDefault(c => c.Type == "user_metadata").Value)["phonenumber"].ToString(),
+                UserId = User.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")?.Value.Substring(6)
             });
         }
 
@@ -75,6 +80,12 @@ namespace ChessClubManagement.Controllers
         public IActionResult Error()
         {
             return View();
+        }
+
+        public IActionResult UpdateUser(UserProfileViewModel viewModel)
+        {
+            _repository.UpdateProfile(viewModel);
+            return RedirectToAction("Profile");
         }
     }
 }

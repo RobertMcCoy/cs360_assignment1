@@ -44,13 +44,71 @@ namespace ChessClubManagement.Models
 
         public Matches GetMatchById(int id)
         {
-            return _context.Matches.Single(m => m.MatchId == id);
+            return _context.Matches.Include(m => m.Student1).ThenInclude(s => s.User).Include(m => m.Student2).ThenInclude(s => s.User).Include(s => s.Season).Single(m => m.MatchId == id);
         }
 
-        public void UpdateMatch(Matches match)
+        public string UpdateMatch(Matches match)
         {
+            if (match.Student1Score == null || match.Student2Score == null ||
+                (match.Student1Score == 1 && !match.Student1Result.Equals("W")) ||
+                (match.Student2Score == 1 && !match.Student2Result.Equals("W")) ||
+                (match.Student1Score == 0.5m && !match.Student1Result.Equals("D")) ||
+                (match.Student2Score == 0.5m && !match.Student2Result.Equals("D")) ||
+                (match.Student1Score == 0 && !match.Student1Result.Equals("L")) ||
+                (match.Student2Score == 0 && !match.Student2Result.Equals("L")) ||
+                (match.Student1Score == 1 && !match.Student1Result.Equals("X")) ||
+                (match.Student2Score == 1 && !match.Student2Result.Equals("X")))
+            {
+                switch (match.Student1Result)
+                {
+                    case "W":
+                        match.Student1Score = 1;
+                        break;
+                    case "L":
+                        match.Student1Score = 0;
+                        break;
+                    case "D":
+                        match.Student1Score = 0.5m;
+                        break;
+                    case "X":
+                        match.Student1Score = 0;
+                        break;
+                    case null:
+                        match.Student1Score = null;
+                        break;
+                }
+                switch (match.Student2Result)
+                {
+                    case "W":
+                        match.Student2Score = 1;
+                        break;
+                    case "L":
+                        match.Student2Score = 0;
+                        break;
+                    case "D":
+                        match.Student2Score = 0.5m;
+                        break;
+                    case "X":
+                        match.Student2Score = 0;
+                        break;
+                    case null:
+                        match.Student2Score = null;
+                        break;
+                }
+            }
+            if (match.Student1Score == null && match.Student2Score == null)
+                return "Please select the results for both players";
+            if (match.Student1Color.Equals(match.Student2Color)) return "Both players cannot be the same color";
+            if (match.Student1Score == 1 && match.Student2Score == 1) return "Both players can not be winners";
+            if ((match.Student1Score == null && match.Student2Score != null) ||
+                (match.Student2Score == null && match.Student1Score != null)) return "Both players require a score.";
+            if ((match.Student1Score == 0.5m && match.Student2Score != 0.5m) ||
+                (match.Student2Score == 0.5m && match.Student1Score != 0.5m)) return "Both players require a score.";
+            if (match.TotalMoves == null) return "Please enter the total moves for the game.";
             _context.Matches.Update(match);
-            _context.SaveChanges();
+            var success = _context.SaveChanges();
+            if (success > 0) return "Match Updated Successfully";
+            return "Error updating match";
         }
     }
 }

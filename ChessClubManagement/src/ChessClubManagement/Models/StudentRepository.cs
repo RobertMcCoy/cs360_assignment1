@@ -87,7 +87,7 @@ namespace ChessClubManagement.Models
                         .ThenInclude(m => m.User)
                         .Include(m => m.Season)
                         .ToList(),
-                Divisions = _context.Students.Where(s => s.UserId == id).Select(s => new MemberDivision()
+                Divisions = _context.Students.Where(s => s.UserId == id).Include(s => s.Division).ThenInclude(s => s.Season).Select(s => new MemberDivision()
                 {
                     Division = s.Division,
                     PlayerStats =
@@ -101,8 +101,8 @@ namespace ChessClubManagement.Models
             int? sStudentId, string divName = "")
         {
             //Tuple: Points, DivRank, TotalPlayersInDiv, OverallRank, TotalPlayersInSeason
-            int overallCounter = 0;
-            int divisionCounter = 0;
+            int overallCounter = 1;
+            int divisionCounter = 1;
             decimal points = 0;
             int divRank = 0;
             int overallRank = 0;
@@ -142,10 +142,11 @@ namespace ChessClubManagement.Models
                     Id = reader.GetInt32(0),
                     DivisionName = reader.GetString(2),
                     Nickname = reader.GetString(1),
-                    Total = reader.GetDecimal(3)
+                    Total = reader.GetDecimal(3),
+                    UserId = reader.GetInt32(4)
                 });
             }
-            return rankings.OrderBy(r => r.Total).ThenBy(r => r.Nickname).ToList();
+            return rankings.OrderByDescending(r => r.Total).ThenBy(r => r.Nickname).ToList();
         }
 
         public string AddStudentToDivision(StudentEditViewModel viewModel)
@@ -198,7 +199,8 @@ namespace ChessClubManagement.Models
                         Id = reader.GetInt32(0),
                         DivisionName = reader.GetString(2),
                         Nickname = reader.GetString(1),
-                        Total = reader.GetDecimal(3)
+                        Total = reader.GetDecimal(3),
+                        UserId = reader.GetInt32(4)
                     });
                 }
                 else
@@ -212,12 +214,28 @@ namespace ChessClubManagement.Models
                             Id = reader.GetInt32(0),
                             DivisionName = reader.GetString(2),
                             Nickname = reader.GetString(1),
-                            Total = reader.GetDecimal(3)
+                            Total = reader.GetDecimal(3),
+                            UserId = reader.GetInt32(4)
                         });
                     }
                 }
             }
             return rankings.OrderByDescending(r => r.Total).ThenBy(r => r.Nickname).ToList();
+        }
+
+        public string RemoveDivisionFromStudent(int id)
+        {
+            var studentDivisionToRemove = _context.Students.Single(s => s.StudentId == id);
+            if (
+                _context.Matches.Any(
+                    m =>
+                        (studentDivisionToRemove.StudentId == m.Student1Id ||
+                         studentDivisionToRemove.StudentId == m.Student2Id)))
+                return "User is already scheduled for matches in that division";
+            _context.Students.Remove(studentDivisionToRemove);
+            var success = _context.SaveChanges();
+            if (success > 0) return "Division Successfully Removed";
+            return "Matches already scheduled for this division";
         }
     }
 }

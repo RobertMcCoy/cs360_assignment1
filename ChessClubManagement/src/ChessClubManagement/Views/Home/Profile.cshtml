@@ -7,20 +7,21 @@
 <div class="row">
     <div class="col-md-12">
         <div class="row">
-            <h2>@ViewData["Title"]</h2>
+            <h1>@ViewData["Title"]</h1>
             <div class="col-md-4">
                 <form asp-action="UpdateUser">
+                    <input type="hidden" asp-for="UserId"/>
                     <label asp-for="@Model.Name"></label>
-                    <input type="text" class="form-control" asp-for="@Model.Name" value="@Model.Name" />
-                    <br />
+                    <input type="text" class="form-control" asp-for="@Model.Name" value="@Model.Name" readonly="readonly"/>
+                    <br/>
                     <i class="glyphicon glyphicon-envelope"></i>
                     <label asp-for="@Model.EmailAddress"></label>
-                    <input class="form-control" type="text" asp-for="@Model.EmailAddress" value="@Model.EmailAddress" />
-                    <br />
+                    <input class="form-control" type="text" asp-for="@Model.EmailAddress" value="@Model.EmailAddress"/>
+                    <br/>
                     <i class="glyphicon glyphicon-phone"></i>
                     <label asp-for="@Model.PhoneNumber"></label>
-                    <input class="form-control" type="text" asp-for="PhoneNumber" value="@Model.PhoneNumber" />
-                    <br />
+                    <input class="form-control" type="text" asp-for="PhoneNumber" value="@Model.PhoneNumber"/>
+                    <br/>
                     <input type="submit" value="Save" class="btn btn-info"/>
                 </form>
             </div>

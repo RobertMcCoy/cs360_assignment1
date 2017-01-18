@@ -58,5 +58,11 @@ namespace ChessClubManagement.Controllers
             TempData["Result"] = _repository.AddStudentToDivision(viewModel);
             return RedirectToAction("Edit", new { id = viewModel.User.Id });
         }
+
+        public IActionResult RemoveDivisionFromUser(int id, StudentEditViewModel viewModel)
+        {
+            TempData["Result"] = _repository.RemoveDivisionFromStudent(id);
+            return RedirectToAction("Edit", viewModel.User.Id);
+        }
     }
 }

@@ -58,7 +58,7 @@
                     <td>
                         @if (User.Claims.Any(c => c.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role" && c.Value == "admin"))
                         {
-                            <form asp-action="RemoveDivisionFromUser" asp-route-id="@division.StudentId"><input type="submit" value="Remove From Division" class="btn btn-info"/></form>
+                            <form asp-action="RemoveDivisionFromUser" asp-route-id="@division.StudentId"><input type="submit" value="Remove From Division" class="btn btn-info"/><input type="hidden" asp-for="User.Id"/></form>
                         }
                     </td>
                 </tr>

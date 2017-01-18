@@ -37,12 +37,12 @@ namespace ChessClubManagement.Controllers
             return View(_repository.GetMatchById(id));
         }
 
-        [HttpGet]
+        [HttpPost]
         [Authorize(Roles = "admin")]
         public IActionResult Save(Matches match)
         {
-            _repository.UpdateMatch(match);
-            return RedirectToAction("Match", new { id = match.MatchId });
+            TempData["Result"] = _repository.UpdateMatch(match);
+            return RedirectToAction("Edit", new { id = match.MatchId });
         }
     }
 }
