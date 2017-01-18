@@ -12,11 +12,11 @@
                 <form asp-action="UpdateUser">
                     <input type="hidden" asp-for="UserId"/>
                     <label asp-for="@Model.Name"></label>
-                    <input type="text" class="form-control" asp-for="@Model.Name" value="@Model.Name" readonly="readonly"/>
+                    <input type="text" class="form-control" asp-for="@Model.Name" value="@Model.Name" />
                     <br/>
                     <i class="glyphicon glyphicon-envelope"></i>
                     <label asp-for="@Model.EmailAddress"></label>
-                    <input class="form-control" type="text" asp-for="@Model.EmailAddress" value="@Model.EmailAddress"/>
+                    <input class="form-control" type="text" asp-for="@Model.EmailAddress" value="@Model.EmailAddress" readonly="readonly" />
                     <br/>
                     <i class="glyphicon glyphicon-phone"></i>
                     <label asp-for="@Model.PhoneNumber"></label>
@@ -28,3 +28,4 @@
         </div>
     </div>
 </div>
+Profile information take effect after you log out and log back in

@@ -6,7 +6,7 @@ namespace ChessClubManagement.Controllers
 {
     internal class HomeRepository
     {
-        private ChessClubContext _context;
+        private readonly ChessClubContext _context;
 
         public HomeRepository(ChessClubContext context)
         {
@@ -21,7 +21,7 @@ namespace ChessClubManagement.Controllers
                 userToUpdate.Nickname = viewModel.Name;
                 userToUpdate.PhoneNumber = viewModel.PhoneNumber;
                 _context.Users.Update(userToUpdate);
-                _context.SaveChanges();
+                var success = _context.SaveChanges();
             }
         }
     }
